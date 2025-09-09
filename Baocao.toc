@@ -1,0 +1,8 @@
+
+\babel@toc {english}{}\relax 
+\contentsline {chapter}{\numberline {1}Nghiệm của phương trình một ẩn}{1}{chapter.1}%
+\contentsline {chapter}{\numberline {2}Chương 2: Nghiệm của phương trình một ẩn}{2}{chapter.2}%
+\contentsline {chapter}{\numberline {3}Chương 7}{3}{chapter.3}%
+\contentsline {chapter}{Ph\d {u} l\d {u}c}{III}{appendix*.5}%
+\save@tocdepth \setcounter {tocdepth}{0}
+\reset@tocdepth 
