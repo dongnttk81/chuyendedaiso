@@ -1,20 +1,20 @@
-PWD /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso
+PWD /Users/dongnguyen/Documents/QH2021/ChuyenDeDaiSo/chuyende_daiso
 INPUT /usr/local/texlive/2022/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-dist/web2c/texmf.cnf
 INPUT /usr/local/texlive/2022/texmf-var/web2c/pdftex/pdflatex.fmt
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.tex
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.log
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/isthesis.cls
+INPUT /Users/dongnguyen/Documents/QH2021/ChuyenDeDaiSo/chuyende_daiso/Baocao.tex
+OUTPUT Baocao.log
+INPUT ./isthesis.cls
+INPUT ./isthesis.cls
+INPUT isthesis.cls
+INPUT ./isthesis.cls
+INPUT ./isthesis.cls
+INPUT ./isthesis.cls
+INPUT ./isthesis.cls
+INPUT ./isthesis.cls
+INPUT isthesis.cls
+INPUT ./isthesis.cls
+INPUT isthesis.cls
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/kvoptions/kvoptions.sty
@@ -1894,7 +1894,7 @@ INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/footmisc/footmisc.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/footmisc/footmisc.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/footmisc/footmisc.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/footmisc/footmisc.sty
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.idx
+OUTPUT Baocao.idx
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/vntex/vntex.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/vntex/vntex.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/vntex/vntex.sty
@@ -1987,35 +1987,35 @@ INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libr
 INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/pgf/frontendlayer/tikz/libraries/tikzlibraryshapes.geometric.code.tex
 INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
 INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/pgf/libraries/shapes/pgflibraryshapes.geometric.code.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/acronyms.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/symbols.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/commands.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/code_block.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/code_block.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/code_block.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/config/code_block.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.aux
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.aux
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.aux
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.aux
+INPUT ./config/acronyms.tex
+INPUT ./config/acronyms.tex
+INPUT ./config/acronyms.tex
+INPUT config/acronyms.tex
+INPUT ./config/acronyms.tex
+INPUT ./config/acronyms.tex
+INPUT config/acronyms.tex
+INPUT ./config/symbols.tex
+INPUT ./config/symbols.tex
+INPUT ./config/symbols.tex
+INPUT config/symbols.tex
+INPUT ./config/symbols.tex
+INPUT ./config/symbols.tex
+INPUT config/symbols.tex
+INPUT ./config/commands.tex
+INPUT ./config/commands.tex
+INPUT ./config/commands.tex
+INPUT config/commands.tex
+INPUT ./config/commands.tex
+INPUT ./config/commands.tex
+INPUT config/commands.tex
+INPUT ./config/code_block.tex
+INPUT config/code_block.tex
+INPUT ./config/code_block.tex
+INPUT config/code_block.tex
+INPUT ./Baocao.aux
+INPUT Baocao.aux
+INPUT Baocao.aux
+OUTPUT Baocao.aux
 INPUT /usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
 INPUT /usr/local/texlive/2022/texmf-dist/tex/context/base/mkii/supp-pdf.mkii
@@ -2094,13 +2094,13 @@ INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/lbx/german.lbx
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/biblatex/lbx/german.lbx
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/biblatex-apa/english-apa.lbx
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/biblatex-apa/english-apa.lbx
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bcf
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.bbl
+OUTPUT Baocao.bcf
+INPUT Baocao.bbl
+INPUT ./Baocao.bbl
+INPUT Baocao.bbl
+INPUT ./Baocao.bbl
+INPUT ./Baocao.bbl
+INPUT Baocao.bbl
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/hyperref/nameref.sty
@@ -2138,23 +2138,23 @@ INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestri
 INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/gettitlestring/gettitlestring.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/latex/kvoptions/kvoptions.sty
 INPUT /usr/local/texlive/2022/texmf-dist/tex/generic/ltxcmds/ltxcmds.sty
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.pdf
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/assets/hus.png
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/assets/hus.png
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/assets/hus.png
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/assets/hus.png
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/assets/hus.png
+INPUT ./Baocao.out
+INPUT Baocao.out
+INPUT ./Baocao.out
+INPUT Baocao.out
+INPUT ./Baocao.out
+INPUT Baocao.out
+INPUT ./Baocao.out
+INPUT Baocao.out
+OUTPUT Baocao.pdf
+INPUT ./Baocao.out
+INPUT ./Baocao.out
+OUTPUT Baocao.out
+INPUT ./assets/hus.png
+INPUT ./assets/hus.png
+INPUT assets/hus.png
+INPUT ./assets/hus.png
+INPUT ./assets/hus.png
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnbx12.tfm
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnbx12.tfm
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnr12.tfm
@@ -2185,41 +2185,79 @@ INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm1
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm10.tfm
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/public/amsfonts/symbols/msbm7.tfm
 INPUT /usr/local/texlive/2022/texmf-var/fonts/map/pdftex/updmap/pdftex.map
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.toc
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.toc
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.toc
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.toc
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/introduction.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/introduction.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/introduction.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/introduction.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/01_Chuong2_Dong.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/01_Chuong2_Dong.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/01_Chuong2_Dong.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/01_Chuong2_Dong.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/02_Chuong2_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/02_Chuong2_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/02_Chuong2_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/02_Chuong2_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/03_Chuong7_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/03_Chuong7_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/03_Chuong7_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/sections/03_Chuong7_Khai.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/ref.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/ref.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/ref.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/ref.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/appendix.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/appendix.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/appendix.tex
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/appendix.tex
+INPUT ./Baocao.toc
+INPUT Baocao.toc
+INPUT Baocao.toc
+OUTPUT Baocao.toc
+INPUT ./sections/introduction.tex
+INPUT sections/introduction.tex
+INPUT ./sections/introduction.tex
+INPUT sections/introduction.tex
+INPUT ./sections/01_Chuong2_Dong.tex
+INPUT sections/01_Chuong2_Dong.tex
+INPUT ./sections/01_Chuong2_Dong.tex
+INPUT sections/01_Chuong2_Dong.tex
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnti12.tfm
+INPUT ./sections/01_Chuong2.1_TheBisectionMethod.tex
+INPUT sections/01_Chuong2.1_TheBisectionMethod.tex
+INPUT ./sections/01_Chuong2.1_TheBisectionMethod.tex
+INPUT sections/01_Chuong2.1_TheBisectionMethod.tex
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnr8.tfm
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnr6.tfm
+INPUT ./assets/figure2.1.png
+INPUT ./assets/figure2.1.png
+INPUT assets/figure2.1.png
+INPUT ./assets/figure2.1.png
+INPUT ./assets/figure2.1.png
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/vntex/vnr/vnbxti10.tfm
+INPUT ./sections/01_Chuong2.2_FixedPointIteration.tex
+INPUT sections/01_Chuong2.2_FixedPointIteration.tex
+INPUT ./sections/01_Chuong2.2_FixedPointIteration.tex
+INPUT sections/01_Chuong2.2_FixedPointIteration.tex
+INPUT ./sections/01_Chuong2.3_NewtonMethod.tex
+INPUT sections/01_Chuong2.3_NewtonMethod.tex
+INPUT ./sections/01_Chuong2.3_NewtonMethod.tex
+INPUT sections/01_Chuong2.3_NewtonMethod.tex
+INPUT ./sections/01_Chuong2.4_ErrorAnalysisforIterativeMethods.tex
+INPUT sections/01_Chuong2.4_ErrorAnalysisforIterativeMethods.tex
+INPUT ./sections/01_Chuong2.4_ErrorAnalysisforIterativeMethods.tex
+INPUT sections/01_Chuong2.4_ErrorAnalysisforIterativeMethods.tex
+INPUT ./sections/01_Chuong2.5_AcceleratingConvergence.tex
+INPUT sections/01_Chuong2.5_AcceleratingConvergence.tex
+INPUT ./sections/01_Chuong2.5_AcceleratingConvergence.tex
+INPUT sections/01_Chuong2.5_AcceleratingConvergence.tex
+INPUT ./sections/02_Chuong2_Khai.tex
+INPUT sections/02_Chuong2_Khai.tex
+INPUT ./sections/02_Chuong2_Khai.tex
+INPUT sections/02_Chuong2_Khai.tex
+INPUT ./sections/03_Chuong7_Khai.tex
+INPUT sections/03_Chuong7_Khai.tex
+INPUT ./sections/03_Chuong7_Khai.tex
+INPUT sections/03_Chuong7_Khai.tex
+INPUT ./ref.tex
+INPUT ref.tex
+INPUT ./ref.tex
+INPUT ref.tex
+INPUT ./appendix.tex
+INPUT appendix.tex
+INPUT ./appendix.tex
+INPUT appendix.tex
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/tfm/jknappen/ec/tcrm1200.tfm
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.aux
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.out
-INPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.run.xml
-OUTPUT /Users/dongnguyen/Documents/QH2021/Chuyen đề Đại số/chuyende_daiso/Baocao.run.xml
+INPUT Baocao.aux
+INPUT ./Baocao.out
+INPUT ./Baocao.out
+INPUT Baocao.run.xml
+OUTPUT Baocao.run.xml
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/enc/dvips/cm-super/cm-super-ts1.enc
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmex10.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi12.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmmi8.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr12.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmr8.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy10.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/amsfonts/cm/cmsy8.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/public/cm-super/sfrm1200.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnbx12.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnbxti10.pfb
 INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnr12.pfb
+INPUT /usr/local/texlive/2022/texmf-dist/fonts/type1/vntex/vnr/vnti12.pfb

@@ -1,1 +1,24 @@
 \chapter{Nghiệm của phương trình một ẩn}
+Trong nhiều lĩnh vực khoa học và kỹ thuật, việc giải phương trình phi tuyến đóng vai trò quan trọng. 
+Một ví dụ tiêu biểu là mô hình tăng trưởng dân số, trong đó tốc độ tăng trưởng tỉ lệ thuận với quy mô hiện tại của quần thể. 
+Khi bổ sung thêm yếu tố nhập cư với tốc độ hằng, ta thu được phương trình vi phân phức tạp hơn. 
+Xét trường hợp một cộng đồng có dân số ban đầu $N(0) = 1{,}000{,}000$, sau một năm có thêm $435{,}000$ người nhập cư và tổng dân số đạt $N(1) = 1{,}564{,}000$. 
+Để xác định tỉ lệ sinh $\lambda$, ta cần giải phương trình
+
+\[
+1{,}564{,}000 \;=\; 1{,}000{,}000 e^{\lambda} + \frac{435{,}000}{\lambda}\big(e^{\lambda} - 1\big).
+\]
+
+Rõ ràng phương trình này không thể giải chính xác bằng các phương pháp đại số thông thường. 
+Trong những tình huống như vậy, các kỹ thuật số trở thành công cụ thiết yếu, cho phép tìm nghiệm xấp xỉ với độ chính xác tùy ý. 
+
+Mục tiêu của Chương 2 là trình bày và phân tích một số phương pháp số cơ bản để giải các phương trình một biến, 
+bao gồm \textit{phương pháp chia đôi}, \textit{lặp điểm cố định}, \textit{Newton--Raphson} và \textit{Secant}. 
+Những phương pháp này không chỉ minh họa cách tiếp cận bài toán nghiệm phi tuyến, 
+mà còn cho thấy sức mạnh của tính toán số trong việc giải quyết các phương trình mà giải tích không xử lý được.
+
+\input{sections/01_Chuong2.1_TheBisectionMethod.tex}
+\input{sections/01_Chuong2.2_FixedPointIteration.tex}
+\input{sections/01_Chuong2.3_NewtonMethod.tex}
+\input{sections/01_Chuong2.4_ErrorAnalysisforIterativeMethods.tex}
+\input{sections/01_Chuong2.5_AcceleratingConvergence.tex}
