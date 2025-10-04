@@ -1,4 +1,210 @@
-\section{Accelerating Convergence}
+\section{Tăng tốc độ hội tụ(Accelerating Convergence)}
+
+Định lý 2.8 cho thấy rằng hội tụ bậc hai là một tính chất hiếm khi đạt được. 
+Phần này giới thiệu một kỹ thuật gọi là \textit{phương pháp Aitken’s $\Delta^2$}, 
+dùng để \textit{tăng tốc quá trình hội tụ tuyến tính} của một dãy, 
+bất kể dãy đó bắt nguồn từ đâu hay áp dụng trong trường hợp nào.
+
+Nhà toán học Alexander Aitken (1895–1967) đã đề xuất kỹ thuật này năm 1926 
+để tăng tốc hội tụ của các chuỗi trong nghiên cứu về phương trình đại số. 
+Quá trình này tương tự với phương pháp đã được nhà toán học Nhật Bản 
+Takakazu Seki Kowa (1642–1708) sử dụng từ thế kỷ 17.
+
+---
+
+\subsection*{\textbf{Phương pháp Aitken’s $\Delta^2$}}
+
+Giả sử $\{p_n\}_{n=0}^\infty$ là dãy hội tụ tuyến tính đến giới hạn $p$.  
+Để xây dựng một dãy hội tụ nhanh hơn, ta giả định rằng các sai số 
+$(p_n - p)$, $(p_{n+1} - p)$ và $(p_{n+2} - p)$ có cùng dấu 
+và $n$ đủ lớn sao cho
+\[
+\frac{p_{n+1} - p}{p_n - p} 
+= \frac{p_{n+2} - p}{p_{n+1} - p}.
+\]
+Giải phương trình này theo $p$ thu được:
+\[
+p = p_n - \frac{(p_{n+1} - p_n)^2}{p_{n+2} - 2p_{n+1} + p_n}.
+\]
+Công thức trên định nghĩa \textit{một dãy mới} hội tụ nhanh hơn đến $p$ 
+so với dãy gốc $\{p_n\}$.
+
+\subsection*{Ví dụ 1}
+
+Xét dãy $p_n = \cos(1/n)$, hội tụ tuyến tính đến $p = 1$.  
+Dùng phương pháp Aitken’s $\Delta^2$ để tạo ra năm phần tử đầu tiên của dãy hội tụ nhanh hơn.
+
+\textbf{Lời giải.}  
+Để tính một phần tử $p_n^{(A2)}$, cần ba phần tử liên tiếp $p_n$, $p_{n+1}$, $p_{n+2}$ của dãy gốc.  
+Do đó, để xác định $p_5^{(A2)}$, cần bảy phần tử đầu tiên của $\{p_n\}$.  
+Bảng dưới đây cho thấy dãy $\{p_n^{(A2)}\}$ hội tụ đến $p = 1$ nhanh hơn rõ rệt so với $\{p_n\}$.
+
+\begin{center}
+\captionof{table}{So sánh tốc độ hội tụ của dãy gốc và dãy Aitken’s $\Delta^2$}
+\label{tab:aitken-example}
+\begin{tabular}{|c|c|c|}
+\hline
+$n$ & $p_n = \cos(1/n)$ & $p_n^{(A2)}$ \\
+\hline
+1 & 0.540302 & -- \\
+2 & 0.877583 & -- \\
+3 & 0.940007 & 0.998947 \\
+4 & 0.968912 & 1.000020 \\
+5 & 0.983347 & 1.000000 \\
+6 & 0.991698 & 1.000000 \\
+7 & 0.996043 & 1.000000 \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{\textbf{Định nghĩa 2.13 (Sai phân tiến)}}
+
+Với dãy $\{p_n\}_{n=0}^\infty$, \textit{sai phân tiến (forward difference)} được định nghĩa là
+\[
+\Delta p_n = p_{n+1} - p_n, \quad n \ge 0.
+\]
+Sai phân bậc cao hơn được định nghĩa đệ quy:
+\[
+\Delta^k p_n = \Delta(\Delta^{k-1} p_n), \quad k \ge 2.
+\]
+Do đó,
+\[
+\Delta^2 p_n = p_{n+2} - 2p_{n+1} + p_n.
+\]
+Khi đó, công thức Aitken có thể được viết gọn dưới dạng:
+\[
+p_n^{(A2)} = p_n - \frac{(\Delta p_n)^2}{\Delta^2 p_n}.
+\]
+
+
+\subsection*{\textbf{Định lý 2.14}}
+
+Giả sử $\{p_n\}$ hội tụ tuyến tính đến giới hạn $p$ và
+\[
+\lim_{n \to \infty} \frac{p_{n+1} - p}{p_n - p} = \lambda, \quad |\lambda| < 1.
+\]
+Khi đó, dãy Aitken $\{p_n^{(A2)}\}$ hội tụ đến $p$ \textit{nhanh hơn} dãy ban đầu, 
+theo nghĩa:
+\[
+\lim_{n \to \infty} \frac{p_n^{(A2)} - p}{p_n - p} = 0.
+\]
+
+\subsection*{\textbf{Phương pháp Steffensen}}
+
+Bằng cách áp dụng một biến thể của phương pháp Aitken’s $\Delta^2$ 
+cho một dãy hội tụ tuyến tính thu được từ quá trình lặp điểm cố định, 
+ta có thể tăng tốc độ hội tụ lên bậc hai. 
+Thủ tục này được gọi là \textit{phương pháp Steffensen}, 
+và chỉ khác một chút so với việc áp dụng trực tiếp công thức Aitken’s $\Delta^2$ 
+cho dãy lặp điểm cố định hội tụ tuyến tính.
+
+Phương pháp Aitken’s $\Delta^2$ xây dựng các phần tử theo thứ tự:
+\[
+p_0, \quad p_1 = g(p_0), \quad p_2 = g(p_1), \quad 
+\hat{p}_0 = [\Delta^2](p_0),
+\]
+trong đó ký hiệu $[\Delta^2]$ biểu thị công thức (2.15) được sử dụng, tức là
+\[
+\hat{p}_0 = p_0 - \frac{(p_1 - p_0)^2}{p_2 - 2p_1 + p_0}.
+\]
+
+Tiếp tục quá trình, ta có
+\[
+p_3 = g(p_2), \quad \hat{p}_1 = [\Delta^2](p_1), \ \text{v.v.}
+\]
+Phương pháp Steffensen xây dựng các phần tử đầu tiên $p_0, p_1, p_2$ và $\hat{p}_0$ 
+giống như phương pháp Aitken, nhưng sau đó sử dụng $\hat{p}_0$ 
+làm giá trị khởi đầu mới thay vì $p_2$.  
+
+Nói cách khác, ta có dãy được tạo thành:
+\[
+p_0^{(0)}, \quad 
+p_1^{(0)} = g(p_0^{(0)}), \quad 
+p_2^{(0)} = g(p_1^{(0)}), \quad 
+p_0^{(1)} = [\Delta^2](p_0^{(0)}), \quad 
+p_1^{(1)} = g(p_0^{(1)}), \ldots
+\]
+
+Cứ mỗi ba phần tử, một phần tử mới của dãy Steffensen được sinh ra bằng công thức Aitken’s $\Delta^2$, 
+trong khi các phần tử còn lại được tính bằng phép lặp điểm cố định thông thường.  
+
+\subsection*{\textbf{Thuật toán – Phương pháp Steffensen}}
+
+INPUT:
+Giá trị khởi đầu $p_0$, sai số cho phép \texttt{TOL}, 
+và số lần lặp tối đa $N_0$.
+
+OUTPUT:
+Nghiệm gần đúng $p$, hoặc thông báo thất bại.
+
+\begin{enumerate}
+  \item Đặt $i = 1$.
+  \item Trong khi $i \le N_0$, thực hiện các bước 3–6:
+  \begin{enumerate}
+    \item Tính $p_1 = g(p_0)$; 
+    \item Tính $p_2 = g(p_1)$;
+    \item Tính
+    \[
+    p = p_0 - \frac{(p_1 - p_0)^2}{p_2 - 2p_1 + p_0}.
+    \]
+    \item Nếu $|p - p_0| < \texttt{TOL}$, 
+    thì xuất $p$ và \textbf{STOP} (thủ tục thành công).
+  \end{enumerate}
+  \item Đặt $i = i + 1$.
+  \item Gán $p_0 = p$ (cập nhật giá trị khởi đầu).
+  \item Nếu $i > N_0$, xuất thông báo: 
+  ``Phương pháp thất bại sau $N_0$ lần lặp.'' và \textbf{STOP}.
+\end{enumerate}
+
+\textit{Ghi chú:}  
+Nếu mẫu số $(p_2 - 2p_1 + p_0)$ bằng 0, 
+thì công thức Aitken’s $\Delta^2$ không xác định. 
+Trong trường hợp đó, thuật toán sẽ dừng và 
+lấy $p_2$ làm xấp xỉ tốt nhất có thể.
+
+\subsection*{Minh hoạ}
+
+Để giải phương trình
+\[
+x^3 + 4x^2 - 10 = 0
+\]
+bằng \textit{phương pháp Steffensen}, ta viết lại
+\[
+x^3 + 4x^2 = 10,
+\]
+suy ra công thức lặp điểm cố định:
+\[
+g(x) = \sqrt{\frac{10}{x + 4}}.
+\]
+
+Phương pháp lặp điểm cố định này đã được xét trong Bảng~2.2, cột (d) của Mục~2.2.  
+Áp dụng quy trình Steffensen với $p_0 = 1.5$, ta thu được các giá trị trong Bảng~\ref{tab:steffensen-iteration}.  
+Giá trị $p_0^{(2)} = 1.365230013$ chính xác đến chữ số thập phân thứ 9.  
+
+Trong ví dụ này, phương pháp Steffensen cho kết quả chính xác tương đương 
+với phương pháp Newton, \textit{nhưng không cần tính đạo hàm}.  
+Kết quả tương tự có thể quan sát ở phần minh hoạ cuối của Mục~2.2.
+
+\begin{center}
+\captionof{table}{Các bước lặp của phương pháp Steffensen cho $f(x) = x^3 + 4x^2 - 10$}
+\label{tab:steffensen-iteration}
+\begin{tabular}{|c|c|c|c|}
+\hline
+$k$ & $p_0^{(k)}$ & $p_1^{(k)} = g(p_0^{(k)})$ & $p_2^{(k)} = g(p_1^{(k)})$ \\
+\hline
+0 & 1.5 & 1.348399725 & 1.367376372 \\
+1 & 1.365265224 & 1.365225534 & 1.365230583 \\
+2 & 1.365230013 & -- & -- \\
+\hline
+\end{tabular}
+\end{center}
+
+\subsection*{\textbf{Định lý 2.15 (Hội tụ bậc hai của phương pháp Steffensen)}}
+
+Giả sử $x = g(x)$ có nghiệm $p$ với $g'(p) \neq 0$.  
+Nếu tồn tại $\delta > 0$ sao cho $g \in C^3[p - \delta,\, p + \delta]$, 
+thì phương pháp Steffensen hội tụ \textit{bậc hai} về $p$ 
+cho mọi giá trị khởi đầu $p_0 \in [p - \delta,\, p + \delta]$.
 
 
 

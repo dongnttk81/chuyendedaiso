@@ -1,4 +1,227 @@
-\section{Error Analysis for Iterative Methods}
+\section{Phân tích sai số cho các phương pháp lặp (Error Analysis for Iterative Methods)}
+
+Trong phần này, ta khảo sát \textit{bậc hội tụ} của các sơ đồ lặp hàm, 
+từ đó rút ra phương pháp Newton như một công cụ để đạt hội tụ nhanh. 
+Đồng thời, ta cũng xem xét các cách cải thiện tốc độ hội tụ của Newton trong một số trường hợp đặc biệt.
+
+Trước hết, cần một khái niệm để đo tốc độ hội tụ của một dãy.
+
+\subsection*{Định nghĩa 2.7 (Bậc hội tụ)}
+
+Giả sử $\{p_n\}$ là một dãy hội tụ về $p$, với $p_n \neq p$ với mọi $n$. 
+Nếu tồn tại các hằng số dương $\lambda$ và $\alpha$ sao cho
+\[
+\lim_{n \to \infty} \frac{|p_{n+1} - p|}{|p_n - p|^\alpha} = \lambda,
+\]
+thì ta nói dãy $\{p_n\}$ hội tụ về $p$ với \textbf{bậc $\alpha$}, 
+và $\lambda$ được gọi là \textit{hằng số sai số tiệm cận}.
+
+Một kỹ thuật lặp dạng $p_n = g(p_{n-1})$ được gọi là \textit{hội tụ bậc $\alpha$} 
+nếu dãy $\{p_n\}$ hội tụ về nghiệm $p = g(p)$ với bậc $\alpha$.
+
+Nói chung, bậc hội tụ càng cao thì dãy càng nhanh tiến tới nghiệm. 
+Hằng số $\lambda$ cũng ảnh hưởng đến tốc độ, nhưng yếu tố quyết định là bậc $\alpha$. 
+Hai trường hợp thường gặp:
+\begin{enumerate}
+  \item Nếu $\alpha = 1$ và $\lambda < 1$, dãy hội tụ tuyến tính (\textit{linear convergence}).
+  \item Nếu $\alpha = 2$, dãy hội tụ bậc hai (\textit{quadratic convergence}).
+\end{enumerate}
+
+Ví dụ minh hoạ tiếp theo sẽ so sánh một dãy hội tụ tuyến tính với một dãy hội tụ bậc hai, 
+cho thấy lý do tại sao nên tìm các phương pháp có bậc hội tụ cao.
+
+\subsection*{\textbf{Minh hoạ}}
+
+Giả sử $\{p_n\}$ là dãy hội tụ tuyến tính về $0$ với hằng số sai số tiệm cận $0.5$, tức là
+\[
+\lim_{n \to \infty} \frac{|p_{n+1}|}{|p_n|} = 0.5.
+\]
+
+Đồng thời, xét một dãy $\{q_n\}$ hội tụ bậc hai về $0$ với cùng hằng số sai số tiệm cận $0.5$, tức là
+\[
+\lim_{n \to \infty} \frac{|q_{n+1}|}{|q_n|^2} = 0.5.
+\]
+
+Với giả thiết $|p_0| = |q_0| = 1$, Bảng~\ref{tab:conv-rates} so sánh tốc độ hội tụ của hai dãy.
+
+\begin{center}
+\captionof{table}{So sánh tốc độ hội tụ tuyến tính và bậc hai}
+\label{tab:conv-rates}
+\begin{tabular}{|c|c|c|}
+\hline
+$n$ & Tuyến tính: $(0.5)^n$ & Bậc hai: $(0.5)^{2^n - 1}$ \\
+\hline
+1 & $5.0000 \times 10^{-1}$ & $5.0000 \times 10^{-1}$ \\
+2 & $2.5000 \times 10^{-1}$ & $1.2500 \times 10^{-1}$ \\
+3 & $1.2500 \times 10^{-1}$ & $7.8125 \times 10^{-3}$ \\
+4 & $6.2500 \times 10^{-2}$ & $3.0518 \times 10^{-5}$ \\
+5 & $3.1250 \times 10^{-2}$ & $4.6566 \times 10^{-10}$ \\
+6 & $1.5625 \times 10^{-2}$ & $1.0842 \times 10^{-19}$ \\
+7 & $7.8125 \times 10^{-3}$ & $5.8775 \times 10^{-39}$ \\
+\hline
+\end{tabular}
+\end{center}
+
+Ta thấy dãy hội tụ bậc hai đạt độ chính xác $10^{-38}$ chỉ sau 7 bước, 
+trong khi dãy hội tụ tuyến tính cần ít nhất 126 bước để đạt cùng mức chính xác.
 
 
+\subsection*{\textbf{Định lý 2.8}}
+
+Giả sử $g \in C[a,b]$ và $g$ ánh xạ $[a,b]$ vào chính nó. 
+Giả sử thêm rằng $g'$ liên tục trên $(a,b)$ và tồn tại hằng số $k < 1$ sao cho
+\[
+|g'(x)| \leq k, \quad \forall x \in (a,b).
+\]
+
+Nếu $g'(p) \neq 0$, thì với mọi giá trị khởi đầu $p_0 \neq p$ trong $[a,b]$, 
+dãy
+\[
+p_n = g(p_{n-1}), \quad n > 1,
+\]
+hội tụ tuyến tính về nghiệm duy nhất $p \in [a,b]$, 
+với hằng số sai số tiệm cận $|g'(p)|$.
+
+\subsection*{\textbf{Định lý 2.9}}
+
+Giả sử $p$ là nghiệm của phương trình $x = g(x)$. 
+Nếu $g'(p) = 0$ và $g''$ liên tục với $|g''(x)| < M$ trên một khoảng mở $I$ chứa $p$, 
+thì tồn tại $\delta > 0$ sao cho, với mọi $p_0 \in [p-\delta,\, p+\delta]$, 
+dãy
+\[
+p_n = g(p_{n-1}), \quad n > 1,
+\]
+hội tụ ít nhất bậc hai đến $p$. Hơn nữa, với $n$ đủ lớn,
+\[
+|p_{n+1} - p| \;\leq\; \tfrac{M}{2}\,|p_n - p|^2.
+\]
+
+
+\subsection*{\textbf{Multiple Roots}}
+
+Trong các phần trước, ta đã giả định rằng $f'(p) \neq 0$, 
+với $p$ là nghiệm của phương trình $f(x) = 0$. 
+Tuy nhiên, trong thực tế, khi $f'(p) = 0$ đồng thời với $f(p) = 0$, 
+các phương pháp Newton và Secant thường gặp khó khăn. 
+Để xem xét chi tiết hơn vấn đề này, ta đưa ra định nghĩa sau.
+
+\subsection*{\textbf{Định nghĩa 2.10 (Nghiệm bội)}}
+
+Một nghiệm $p$ của phương trình $f(x) = 0$ được gọi là 
+\textit{nghiệm bội (zero of multiplicity)} bậc $m$ của $f$ 
+nếu, với mọi $x \neq p$, ta có thể viết
+\[
+f(x) = (x - p)^m q(x),
+\]
+trong đó 
+\[
+\lim_{x \to p} q(x) \neq 0.
+\]
+
+Với đa thức, $p$ là nghiệm bội bậc $m$ của $f$ 
+nếu $f(x) = (x - p)^m q(x)$ và $q(p) \neq 0$.
+
+Về bản chất, $q(x)$ biểu diễn phần của hàm $f(x)$ 
+không đóng góp vào nghiệm tại $x = p$. 
+Kết quả tiếp theo sẽ giúp xác định các \textit{nghiệm đơn (simple zeros)}, 
+tức là những nghiệm có bội bằng $1$.
+
+\subsection*{\textbf{Định lý 2.11}}
+
+Giả sử $f \in C^1[a,b]$. 
+Hàm $f$ có \textit{nghiệm đơn (simple zero)} tại $p \in (a,b)$ 
+khi và chỉ khi 
+\[
+f(p) = 0 \quad \text{và} \quad f'(p) \neq 0.
+\]
+
+\subsection*{\textbf{Định lý 2.12}}
+
+Giả sử $f \in C^m[a,b]$.  
+Hàm $f$ có nghiệm bội $m$ tại $p \in (a,b)$ 
+khi và chỉ khi
+\[
+0 = f(p) = f'(p) = f''(p) = \cdots = f^{(m-1)}(p), 
+\quad \text{nhưng} \quad f^{(m)}(p) \neq 0.
+\]
+
+Kết quả trong Định lý 2.12 cho thấy rằng 
+nếu tồn tại một lân cận của $p$ mà tại đó phương pháp Newton được áp dụng, 
+thì nó sẽ hội tụ bậc hai về $p$ đối với mọi giá trị khởi đầu $p_0$ đủ gần $p$, 
+miễn là $p$ là nghiệm đơn.  
+Ví dụ tiếp theo sẽ minh hoạ rằng hội tụ bậc hai có thể không xảy ra 
+khi nghiệm không phải là nghiệm đơn.
+
+\subsection*{Ví dụ 1 – Ảnh hưởng của nghiệm bội đến phương pháp Newton}
+
+Xét hàm
+\[
+f(x) = e^x - x - 1.
+\]
+
+\begin{enumerate}[label=(\alph*)]
+  \item Chứng minh rằng $f$ có nghiệm bội 2 tại $x = 0$.
+  \item Áp dụng phương pháp Newton với $p_0 = 1$ để khảo sát tốc độ hội tụ.
+\end{enumerate}
+
+\textbf{Lời giải.}
+
+(a)  
+Ta có
+\[
+f'(x) = e^x - 1, 
+\qquad 
+f''(x) = e^x.
+\]
+Tại $x = 0$, ta nhận được
+\[
+f(0) = 0, 
+\quad 
+f'(0) = 0, 
+\quad 
+f''(0) = 1 \neq 0.
+\]
+Do đó, $x = 0$ là nghiệm bội 2 của $f(x)$.
+
+(b)  
+Áp dụng công thức Newton
+\[
+p_{n} = p_{n-1} - \frac{f(p_{n-1})}{f'(p_{n-1})}
+       = p_{n-1} - \frac{e^{p_{n-1}} - p_{n-1} - 1}{e^{p_{n-1}} - 1}.
+\]
+
+Với $p_0 = 1$, ta thu được:
+\[
+\begin{aligned}
+p_1 &= 1 - \frac{e - 2}{e - 1} 
+      \approx 0.5819767, \\
+p_2 &= 0.5819767 - 
+      \frac{e^{0.5819767} - 0.5819767 - 1}{e^{0.5819767} - 1} 
+      \approx 0.3190623, \\
+p_3 &\approx 0.1729500, \\
+p_4 &\approx 0.0906560, \\
+p_5 &\approx 0.0460287.
+\end{aligned}
+\]
+
+\begin{center}
+\captionof{table}{Các giá trị lặp của phương pháp Newton cho $f(x)=e^x-x-1$}
+\label{tab:newton-multroot}
+\begin{tabular}{|c|c|}
+\hline
+$n$ & $p_n$ \\
+\hline
+0 & 1.0000000 \\
+1 & 0.5819767 \\
+2 & 0.3190623 \\
+3 & 0.1729500 \\
+4 & 0.0906560 \\
+5 & 0.0460287 \\
+\hline
+\end{tabular}
+\end{center}
+
+Ta thấy dãy $\{p_n\}$ hội tụ đến nghiệm $p = 0$, 
+nhưng tốc độ hội tụ chỉ là \textit{tuyến tính}, không phải bậc hai như trường hợp nghiệm đơn. 
+Đây chính là hiện tượng chung của phương pháp Newton khi áp dụng cho các nghiệm bội.
 

@@ -1,4 +1,319 @@
-\section{Newton's Method and Its Extensions}
+\section{Phương pháp Newton và các mở rộng}
+
+Isaac Newton (1643–1727) là một trong những nhà khoa học vĩ đại nhất mọi thời đại. 
+Vào cuối thế kỷ 17, các công trình của ông đã chạm đến hầu hết các lĩnh vực toán học. 
+Phương pháp mang tên ông được giới thiệu nhằm tìm nghiệm của phương trình
+\[
+y^3 - 2y - 5 = 0.
+\]
+Mặc dù Newton minh hoạ phương pháp chủ yếu cho đa thức, ông đã nhận ra khả năng ứng dụng rộng hơn của nó.
+
+Phương pháp Newton (Newton--Raphson) là một trong những kỹ thuật số mạnh mẽ và nổi tiếng để tìm nghiệm của phương trình phi tuyến. 
+Có nhiều cách trình bày phương pháp: (i) trực quan bằng hình học/đồ thị như trong giải tích; 
+(ii) như một lược đồ có tốc độ hội tụ nhanh hơn so với một số lặp hàm khác; 
+và (iii) dựa trên khai triển Taylor, vừa dẫn ra công thức, vừa cho phép ước lượng sai số xấp xỉ. 
+Dưới đây là cách suy ra công thức bằng khai triển Taylor.
+
+Giả sử $f \in C^2[a,b]$. Cho $p_0 \in [a,b]$ là một xấp xỉ ban đầu của nghiệm $p$ sao cho $f'(p_0) \neq 0$ và $|p - p_0|$ ``nhỏ''. 
+Khai triển Taylor bậc nhất của $f$ tại $x=p_0$, đánh giá ở $x=p$, cho
+\[
+f(p) \;=\; f(p_0) + (p - p_0)\,f'(p_0) + \tfrac{1}{2} f''(\xi)\,(p - p_0)^2,
+\]
+với một $\xi$ nằm giữa $p$ và $p_0$. 
+Vì $f(p)=0$, ta được
+\[
+0 \;=\; f(p_0) + (p - p_0)\,f'(p_0) + \tfrac{1}{2} f''(\xi)\,(p - p_0)^2.
+\]
+Nếu $|p - p_0|$ đủ nhỏ, bỏ qua hạng bậc hai cho xấp xỉ tuyến tính
+\[
+0 \;\approx\; f(p_0) + (p - p_0)\,f'(p_0),
+\]
+từ đó
+\[
+p \;\approx\; p_0 - \frac{f(p_0)}{f'(p_0)}.
+\]
+
+Suy ra công thức truy hồi Newton
+\[
+p_{n} \;=\; p_{n-1} - \frac{f(p_{n-1})}{f'(p_{n-1})}, \qquad n \ge 1. \tag{2.7}
+\]
+
+% (Tuỳ chọn) Hình minh hoạ tiếp tuyến:
+% \begin{figure}[h!]
+% \centering
+% \includegraphics[width=0.6\textwidth]{figure_newton_tangent.png}
+% \caption{Minh hoạ phương pháp Newton: từ $p_0$, lấy giao điểm trục hoành của tiếp tuyến tại $(p_0, f(p_0))$ để được $p_1$, rồi lặp.}
+% \label{fig:newton-geom}
+% \end{figure}
+
+\subsection*{\textbf{Thuật toán – Phương pháp Newton}}
+
+INPUT: giá trị gần đúng ban đầu $p_0$, sai số cho phép \texttt{TOL}, số lần lặp tối đa $N_0$.  
+
+OUTPUT: nghiệm gần đúng $p$, hoặc thông báo thất bại.
+
+\begin{enumerate}
+  \item Đặt $i = 1$.
+  \item Trong khi $i \leq N_0$, thực hiện:
+  \begin{enumerate}
+    \item Tính
+    \[
+    p = p_0 - \frac{f(p_0)}{f'(p_0)}.
+    \]
+    \item Nếu $|p - p_0| < \texttt{TOL}$, thì xuất $p$ và \textbf{STOP}.
+    \item Đặt $i = i+1$, $p_0 = p$.
+  \end{enumerate}
+  \item Nếu chưa hội tụ sau $N_0$ bước, xuất thông báo: ``Phương pháp thất bại sau $N_0$ lần lặp.'' và \textbf{STOP}.
+\end{enumerate}
+
+\subsection*{Điều kiện dừng và dạng lặp của phương pháp Newton}
+
+Các bất đẳng thức dừng được dùng trong phương pháp chia đôi cũng có thể áp dụng cho phương pháp Newton. 
+Cụ thể, chọn một ngưỡng sai số $\varepsilon > 0$ và xây dựng dãy $\{p_n\}$ cho đến khi đạt một trong các điều kiện:
+
+\[
+|p_N - p_{N-1}| < \varepsilon \tag{2.8}
+\]
+
+\[
+\frac{|p_N - p_{N-1}|}{|p_N|} < \varepsilon, 
+\quad p_N \neq 0 \tag{2.9}
+\]
+
+hoặc
+
+\[
+|f(p_N)| < \varepsilon. \tag{2.10}
+\]
+
+Một dạng của (2.8) thường được sử dụng ở bước 4 trong Thuật toán 2.3. 
+Lưu ý rằng không bất đẳng thức nào trong (2.8)--(2.10) cung cấp thông tin chính xác về sai số thực sự $|p_N - p|$.
+
+Phương pháp Newton cũng có thể được xem như một dạng lặp điểm cố định, với công thức
+\[
+p_n = g(p_{n-1}) = p_{n-1} - \frac{f(p_{n-1})}{f'(p_{n-1})}, \quad n \geq 1. \tag{2.11}
+\]
+
+Đây chính là dạng lặp đã mang lại sự hội tụ rất nhanh được quan sát ở cột (e) trong Bảng~\ref{tab:fixedpoint-table}. 
+Tuy nhiên, phương pháp không thể tiếp tục nếu $f'(p_{n-1}) = 0$ tại một bước nào đó. 
+Trên thực tế, phương pháp Newton hiệu quả nhất khi $f'$ không tiến gần 0 trong một lân cận của nghiệm $p$.
+
+\subsection*{\textbf{Ví dụ 1}}
+
+Xét hàm $f(x) = \cos x - x$. Hãy xấp xỉ nghiệm của $f$ bằng:
+\begin{enumerate}[label=(\alph*)]
+  \item phương pháp lặp điểm cố định;
+  \item phương pháp Newton.
+\end{enumerate}
+
+\textbf{Lời giải.}
+
+(a) Nghiệm của bài toán tìm nghiệm cũng chính là nghiệm của bài toán điểm cố định $x = \cos x$. 
+Đồ thị trong Hình~\ref{fig:fixedpoint-cosx} cho thấy có đúng một điểm cố định $p$ trong khoảng $[0,\tfrac{\pi}{2}]$. 
+
+Với giá trị khởi đầu $p_0 = \pi/4$, ta thu được kết quả ở Bảng~\ref{tab:fixedpoint-cosx}.
+
+\begin{center}
+\captionof{table}{Lặp điểm cố định cho $f(x) = \cos x - x$, $p_0 = \pi/4$}
+\label{tab:fixedpoint-cosx}
+\begin{tabular}{|c|c|}
+\hline
+$n$ & $p_n$ \\
+\hline
+0 & 0.7853981635 \\
+1 & 0.7071067810 \\
+2 & 0.7602445972 \\
+3 & 0.7246674808 \\
+4 & 0.7487198858 \\
+5 & 0.7325608446 \\
+6 & 0.7434642113 \\
+7 & 0.7361282565 \\
+\hline
+\end{tabular}
+\end{center}
+
+Từ bảng trên, có thể kết luận nghiệm $p \approx 0.74$.
+
+(b) Để áp dụng phương pháp Newton, ta có
+\[
+f'(x) = -\sin x - 1.
+\]
+
+Với $p_0 = \pi/4$, lần lượt tính được:
+\[
+p_1 = p_0 - \frac{\cos(\pi/4) - \pi/4}{-\sin(\pi/4) - 1} \approx 0.7395361337,
+\]
+\[
+p_2 = p_1 - \frac{\cos(p_1) - p_1}{-\sin(p_1) - 1} \approx 0.7390851781,
+\]
+\[
+p_3 = p_2 - \frac{\cos(p_2) - p_2}{-\sin(p_2) - 1} \approx 0.7390851332.
+\]
+
+Kết quả được trình bày trong Bảng~\ref{tab:newton-cosx}.
+
+\begin{center}
+\captionof{table}{Phương pháp Newton cho $f(x) = \cos x - x$, $p_0 = \pi/4$}
+\label{tab:newton-cosx}
+\begin{tabular}{|c|c|}
+\hline
+$n$ & $p_n$ \\
+\hline
+0 & 0.7853981635 \\
+1 & 0.7395361337 \\
+2 & 0.7390851781 \\
+3 & 0.7390851332 \\
+4 & 0.7390851332 \\
+\hline
+\end{tabular}
+\end{center}
+
+Chỉ sau ba bước lặp, nghiệm gần đúng đã đạt $p \approx 0.7390851332$, 
+chính xác hơn nhiều so với bảy bước lặp điểm cố định.
+
+\subsection*{Hội tụ khi dùng phương pháp Newton}
+
+Ví dụ 1 đã cho thấy phương pháp Newton có thể tạo ra xấp xỉ cực kỳ chính xác chỉ với rất ít bước lặp. 
+Trong ví dụ đó, chỉ một lần lặp Newton đã cho độ chính xác tốt hơn bảy lần lặp bằng phương pháp điểm cố định. 
+Bây giờ, ta sẽ xem xét kỹ hơn để hiểu tại sao Newton lại hiệu quả như vậy.
+
+Khai triển Taylor ở đầu mục 2.3 đã chỉ ra tầm quan trọng của việc chọn gần đúng ban đầu chính xác. 
+Giả định then chốt là số hạng bậc hai $(p - p_0)^2$ nhỏ hơn nhiều so với $|p - p_0|$, 
+nên có thể bỏ qua. Điều này rõ ràng không đúng trừ khi $p_0$ đủ gần nghiệm $p$. 
+Nếu $p_0$ không đủ gần nghiệm thực sự, thì khó có lý do để tin rằng Newton sẽ hội tụ về nghiệm. 
+Tuy nhiên, trong một số trường hợp, ngay cả những xấp xỉ ban đầu kém cũng có thể dẫn đến hội tụ 
+(xem thêm các Bài tập 15 và 16).
+
+Định lý sau đây làm sáng tỏ sự hội tụ của phương pháp Newton và nhấn mạnh tầm quan trọng 
+của việc chọn giá trị khởi đầu $p_0$.
+
+\subsection*{Định lý (Hội tụ của phương pháp Newton)}
+
+Giả sử $f \in C^2[a,b]$. Nếu $p \in (a,b)$ thỏa mãn $f(p)=0$ và $f'(p) \neq 0$, 
+thì tồn tại một $\delta > 0$ sao cho phương pháp Newton sinh ra dãy 
+$\{p_n\}_{n=1}^\infty$ hội tụ về $p$ với mọi giá trị khởi đầu 
+$p_0 \in [p-\delta,\, p+\delta]$.
+
+\textbf{Phác thảo chứng minh.}  
+Xem phương pháp Newton như một lặp điểm cố định:
+\[
+p_n = g(p_{n-1}), \quad n \geq 1,
+\]
+trong đó
+\[
+g(x) = x - \frac{f(x)}{f'(x)}.
+\]
+
+Ta cần tìm một khoảng $[p-\delta,\,p+\delta]$ sao cho $g$ ánh xạ khoảng này vào chính nó 
+và tồn tại hằng số $k < 1$ sao cho $|g'(x)| \leq k$ trên đó.
+
+Vì $f'(p) \neq 0$ và $f \in C^2$, nên $g$ khả vi và liên tục trong một lân cận của $p$. 
+Hơn nữa,
+\[
+g'(p) = \frac{f(p)f''(p)}{[f'(p)]^2} = 0,
+\]
+vì $f(p) = 0$. Do đó, tồn tại $\delta > 0$ sao cho $|g'(x)| < k < 1$ 
+với mọi $x \in [p-\delta,\,p+\delta]$.
+
+Theo Định lý điểm cố định, dãy $\{p_n\}$ sẽ hội tụ đến điểm cố định $p$.
+
+\section*{\textbf{The Secant Method}}
+
+Phương pháp Newton là một kỹ thuật rất mạnh, nhưng có một nhược điểm lớn: 
+cần biết giá trị của đạo hàm $f'(x)$ tại mỗi bước lặp. 
+Trong nhiều trường hợp, việc tính đạo hàm còn khó khăn và tốn nhiều phép tính hơn so với tính $f(x)$.
+
+Để khắc phục vấn đề này, ta xét một biến thể: thay vì sử dụng $f'(p_{n-1})$, 
+ta xấp xỉ nó bằng công thức sai phân
+\[
+f'(p_{n-1}) \;\approx\; \frac{f(p_{n-1}) - f(p_{n-2})}{p_{n-1} - p_{n-2}}.
+\]
+
+Thay vào công thức Newton, ta thu được
+\[
+p_n \;=\; p_{n-1} - f(p_{n-1}) \cdot \frac{p_{n-1} - p_{n-2}}{f(p_{n-1}) - f(p_{n-2})}, 
+\qquad n > 1. \tag{2.12}
+\]
+
+Kỹ thuật này được gọi là \textit{phương pháp Secant} và được mô tả trong Thuật toán 2.4.
+
+Phương pháp bắt đầu với hai giá trị khởi đầu $p_0$ và $p_1$. 
+Nghiệm gần đúng $p_2$ chính là giao điểm với trục hoành của đường secant đi qua hai điểm 
+$(p_0, f(p_0))$ và $(p_1, f(p_1))$. 
+Sau đó, $p_3$ được tính bằng giao điểm của secant nối $(p_1, f(p_1))$ và $(p_2, f(p_2))$, 
+và tiếp tục như vậy. 
+
+Điểm quan trọng là, sau khi tính $f(p_0)$ và $f(p_1)$, 
+mỗi bước của phương pháp Secant chỉ cần thêm một phép tính giá trị hàm số. 
+Trong khi đó, mỗi bước của Newton yêu cầu cả $f$ và $f'$. 
+Vì vậy, trong nhiều trường hợp phương pháp Secant là một lựa chọn kinh tế hơn.
+
+---
+
+\subsection*{\textbf{Thuật toán – Phương pháp Secant}}
+
+INPUT: hai giá trị khởi đầu $p_0, p_1$, sai số cho phép \texttt{TOL}, số lần lặp tối đa $N_0$.  
+
+OUTPUT: nghiệm gần đúng $p$, hoặc thông báo thất bại.
+
+\begin{enumerate}
+  \item Đặt $i = 2$.
+  \item Trong khi $i \leq N_0$, thực hiện:
+  \begin{enumerate}
+    \item Tính
+    \[
+    p = p_{i-1} - f(p_{i-1}) \cdot \frac{p_{i-1} - p_{i-2}}{f(p_{i-1}) - f(p_{i-2})}.
+    \]
+    \item Nếu $|p - p_{i-1}| < \texttt{TOL}$, thì xuất $p$ và \textbf{STOP}.
+    \item Đặt $i = i+1$, $p_{i-2} = p_{i-1}$, $p_{i-1} = p$.
+  \end{enumerate}
+  \item Nếu chưa hội tụ sau $N_0$ bước, xuất thông báo: 
+  ``Phương pháp thất bại sau $N_0$ lần lặp.'' và \textbf{STOP}.
+\end{enumerate}
+
+\subsection*{\textbf{Phương pháp dây cung}}
+
+Phương pháp Secant có thể hội tụ nhanh hơn phương pháp Newton trong một số trường hợp, 
+nhưng nó không đảm bảo giữ nghiệm xấp xỉ trong khoảng ban đầu $[a,b]$. 
+Nếu $f(a)$ và $f(b)$ trái dấu, phương pháp dây cung (\textit{method of false position}, 
+hay \textit{Regula Falsi}) vừa tận dụng ý tưởng secant vừa giữ được tính chất 
+“bracketing” như phương pháp chia đôi.
+
+Ý tưởng cơ bản là: bắt đầu với $a_0$ và $b_0$ sao cho $f(a_0)f(b_0) < 0$. 
+Xác định $p_0$ là giao điểm trục hoành của đường secant qua $(a_0,f(a_0))$ và $(b_0,f(b_0))$, tức là
+\[
+p_0 = b_0 - f(b_0)\,\frac{b_0 - a_0}{f(b_0) - f(a_0)}.
+\]
+
+Nếu $f(p_0) = 0$ thì $p_0$ chính là nghiệm. 
+Nếu không, ta chọn cặp khoảng mới $[a_1,b_1]$ sao cho $f(a_1)f(b_1)<0$, 
+trong đó một đầu mút là $p_0$ và đầu mút còn lại được giữ từ bước trước. 
+Tiếp tục quá trình để thu được dãy $\{p_n\}$.
+
+\textbf{Thuật toán – Phương pháp dây cung}
+
+INPUT: $a$, $b$ sao cho $f(a)f(b)<0$; sai số cho phép \texttt{TOL}; số lần lặp tối đa $N_0$.  
+
+OUTPUT: nghiệm gần đúng $p$, hoặc thông báo thất bại.
+
+\begin{enumerate}
+  \item Đặt $i = 1$.
+  \item Trong khi $i \leq N_0$, thực hiện:
+  \begin{enumerate}
+    \item Tính
+    \[
+    p = b - f(b)\,\frac{b - a}{f(b) - f(a)}.
+    \]
+    \item Nếu $|f(p)| < \texttt{TOL}$, thì xuất $p$ và \textbf{STOP}.
+    \item Nếu $f(a)f(p) < 0$, đặt $b = p$; ngược lại, đặt $a = p$.
+    \item Đặt $i = i+1$.
+  \end{enumerate}
+  \item Nếu chưa hội tụ sau $N_0$ bước, xuất thông báo: 
+  ``Phương pháp thất bại sau $N_0$ lần lặp.'' và \textbf{STOP}.
+\end{enumerate}
+
+
+
 
 
 

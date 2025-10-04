@@ -1,4 +1,178 @@
-\section{Fixed-Point Iteration}
+\section{Phương pháp lặp điểm cố định (Fixed-Point Iteration)}
+
+\textbf{Định nghĩa} Một số $p$ được gọi là \textit{điểm cố định} của một hàm $g$ nếu 
+\[
+g(p) = p.
+\]
+
+Khái niệm điểm cố định xuất hiện trong nhiều lĩnh vực toán học và là một công cụ quan trọng cho các nhà kinh tế khi chứng minh các kết quả liên quan đến cân bằng. Thuật ngữ “điểm cố định” được giới thiệu bởi nhà toán học người Hà Lan \textbf{L. E. J. Brouwer (1882–1966)} vào đầu những năm 1900.
+
+Trong phần này, chúng ta xét bài toán tìm điểm cố định của một hàm và mối quan hệ của nó với bài toán tìm nghiệm của phương trình phi tuyến. Hai bài toán này là tương đương theo nghĩa sau:
+
+\begin{itemize}
+  \item Cho một bài toán tìm nghiệm $f(p) = 0$, có thể xác định một hàm $g$ sao cho $p$ là điểm cố định, ví dụ:
+  \[
+  g(x) = x - f(x), 
+  \quad \text{hoặc} \quad 
+  g(x) = x + \lambda f(x),
+  \]
+  với $\lambda$ thích hợp.
+  \item Ngược lại, nếu $g$ có một điểm cố định tại $p$, thì hàm
+  \[
+  f(x) = x - g(x)
+  \]
+  có một nghiệm tại $p$.
+\end{itemize}
+
+Mặc dù thường thì chúng ta quan tâm đến việc giải phương trình $f(x) = 0$, nhưng việc đưa về dạng điểm cố định thường thuận lợi hơn cho việc phân tích, và trong nhiều trường hợp, sự lựa chọn thích hợp của hàm $g$ có thể đem lại những thuật toán tìm nghiệm hiệu quả hơn.
+
+Để gần đúng một điểm cố định của một hàm $g$, ta bắt đầu với một giá trị gần đúng ban đầu $p_0$ và xác định một dãy $\{p_n\}$ theo công thức lặp
+\[
+p_n = g(p_{n-1}), \quad n \geq 1.
+\]
+
+Nếu dãy $\{p_n\}$ hội tụ và $g$ liên tục, thì
+\[
+p = \lim_{n \to \infty} p_n = g(p).
+\]
+
+Do đó $p$ là một nghiệm của phương trình điểm cố định $x = g(x)$.  
+Phương pháp này được gọi là \textit{lặp điểm cố định (fixed-point iteration)} hoặc \textit{lặp hàm (functional iteration)}.
 
 
+\subsection*{\textbf{Thuật toán – Lặp điểm cố định}}
 
+INPUT: giá trị gần đúng ban đầu $p_0$, sai số cho phép \texttt{TOL}, số lần lặp tối đa $N_0$.  
+
+OUTPUT: nghiệm xấp xỉ $p$, hoặc thông báo thất bại.
+
+\begin{enumerate}
+  \item Đặt $i = 1$.
+  \item Trong khi $i \leq N_0$, thực hiện:
+  \begin{enumerate}
+    \item Tính $p = g(p_0)$.
+    \item Nếu $|p - p_0| < \texttt{TOL}$, thì xuất $p$ và \textbf{STOP}.
+    \item Tăng $i = i + 1$.
+    \item Đặt $p_0 = p$.
+  \end{enumerate}
+  \item Nếu chưa hội tụ sau $N_0$ bước, xuất thông báo: ``Phương pháp thất bại sau $N_0$ lần lặp'' và \textbf{STOP}.
+\end{enumerate}
+
+\subsection*{\textbf{Minh hoạ}}
+
+Xét phương trình
+\[
+x^3 + 4x^2 - 10 = 0,
+\]
+phương trình này có một nghiệm duy nhất trong khoảng $[1,2]$.
+
+Có nhiều cách biến đổi phương trình này sang dạng điểm cố định $x = g(x)$ bằng các phép biến đổi đại số đơn giản. Ví dụ:
+
+\begin{align*}
+g_1(x) &= x - (x^3 + 4x^2 - 10), \\
+g_2(x) &= \sqrt{\frac{10 - x^3}{4}}, \\
+g_3(x) &= \tfrac{1}{2}\sqrt{\,10 - x^3\,}, \\
+g_4(x) &= \sqrt{\frac{10}{x+4}}, \\
+g_5(x) &= x - \frac{x^3 + 4x^2 - 10}{3x^2 + 8x}.
+\end{align*}
+
+Với giá trị khởi đầu $p_0 = 1.5$, áp dụng phương pháp lặp điểm cố định cho từng hàm $g_i(x)$, ta thu được các dãy giá trị khác nhau.  
+Kết quả được trình bày trong Bảng~\ref{tab:fixedpoint-illustration}.
+
+\begin{center}
+\captionof{table}{Kết quả lặp điểm cố định cho $f(x) = x^3 + 4x^2 - 10 = 0$ với các lựa chọn $g(x)$ khác nhau, bắt đầu từ $p_0=1.5$}
+\label{tab:fixedpoint-illustration}
+\begin{tabular}{|c|c|c|c|c|c|}
+\hline
+$n$ & (a) & (b) & (c) & (d) & (e) \\
+\hline
+0  & 1.5 & 1.5 & 1.5 & 1.5 & 1.5 \\
+1  & -0.875 & 0.8165 & 1.286953768 & 1.348399725 & 1.373333333 \\
+2  & 6.732 & 2.9969 & 1.402540804 & 1.367376372 & 1.365262015 \\
+3  & -469.7 & $(-8.65)^{1/2}$ & 1.345458374 & 1.364957015 & 1.365230014 \\
+4  & $1.03\times 10^8$ &  & 1.375170253 & 1.365264748 & 1.365230013 \\
+5  &  &  & 1.360094193 & 1.365225594 &  \\
+6  &  &  & 1.367846968 & 1.365230576 &  \\
+7  &  &  & 1.363887004 & 1.365229942 &  \\
+8  &  &  & 1.365916734 & 1.365230022 &  \\
+9  &  &  & 1.364878217 & 1.365230012 &  \\
+10 &  &  & 1.365410062 & 1.365230014 &  \\
+15 &  &  & 1.365223680 & 1.365230013 &  \\
+20 &  &  & 1.365230236 & 1.365230013 &  \\
+25 &  &  & 1.365230006 & 1.365230013 &  \\
+30 &  &  & 1.365230013 & 1.365230013 &  \\
+\hline
+\end{tabular}
+\end{center}
+
+\noindent
+\textbf{Giải thích.}  
+Bảng~\ref{tab:fixedpoint-illustration} minh họa rõ ràng rằng cách chọn hàm $g(x)$ ảnh hưởng trực tiếp đến sự hội tụ của phương pháp lặp điểm cố định:
+
+\begin{itemize}
+  \item \textbf{(a)} Dãy lặp nhanh chóng phân kỳ. Các giá trị trở nên cực lớn (bùng nổ) sau vài bước.
+  \item \textbf{(b)} Sau hai bước thì giá trị $p_2 = 2.9969$, dẫn đến $p_3 = \sqrt{-8.65}$ là vô nghĩa (không xác định trên $\mathbb{R}$). Do đó quá trình lặp dừng lại.
+  \item \textbf{(c)} Dãy lặp hội tụ đến nghiệm đúng $p \approx 1.365230$, nhưng tốc độ hội tụ chậm; cần khoảng 30 bước mới đạt chính xác $10^{-9}$.
+  \item \textbf{(d)} Dãy lặp hội tụ nhanh chóng về nghiệm đúng $p \approx 1.365230$, với sai số giảm nhanh chỉ sau vài bước.
+  \item \textbf{(e)} Đây là dạng công thức Newton cho phương trình $f(x)=0$. Dãy lặp hội tụ cực nhanh (hội tụ bậc hai) và đạt chính xác $10^{-9}$ chỉ sau 5 bước.
+\end{itemize}
+
+Kết quả này cho thấy rằng mặc dù có nhiều cách viết lại phương trình $f(x)=0$ thành dạng $x=g(x)$, nhưng chỉ một số lựa chọn $g$ mang lại sự hội tụ hiệu quả. Tiêu chuẩn quan trọng để đảm bảo hội tụ là điều kiện \(|g'(p)| < 1\) trong một lân cận của nghiệm $p$.
+
+
+\subsection*{\textbf{Định lý (Định lý điểm cố định)}}
+
+Giả sử $g \in C[a,b]$ và $g(x) \in [a,b]$ với mọi $x \in [a,b]$.  
+Giả sử thêm rằng $g'$ tồn tại trên $(a,b)$ và tồn tại một hằng số $0 < k < 1$ sao cho
+\[
+|g'(x)| \leq k, \quad \forall x \in (a,b).
+\]
+
+Khi đó, với mọi giá trị khởi đầu $p_0 \in [a,b]$, dãy được xác định bởi
+\[
+p_n = g(p_{n-1}), \quad n \geq 1,
+\]
+hội tụ về điểm cố định duy nhất $p \in [a,b]$.
+
+---
+
+\subsection*{\textbf{Hệ quả}}
+
+Nếu $g$ thỏa mãn các giả thiết của Định lý điểm cố định, thì ta có các cận sai số khi dùng $p_n$ để xấp xỉ $p$ như sau:
+\[
+|p_n - p| \leq k^n \max\{\,p_0 - a,\; b - p_0 \,\}, \tag{2.5}
+\]
+và
+\[
+|p_n - p| \leq \frac{k^n}{1-k}\,|p_1 - p_0|, 
+\quad \text{với mọi } n \geq 1. \tag{2.6}
+\]
+
+\subsection*{\textbf{Minh hoạ}}
+
+Xét lại các dạng lặp điểm cố định trong Bảng~\ref{tab:fixedpoint-illustration} dựa trên Định lý điểm cố định và Hệ quả:
+
+\begin{itemize}
+  \item[(a)] Với $g_1(x) = x - (x^3 + 4x^2 - 10)$, ta có $g_1(1) = 6$ và $g_1(2) = -12$, nên $g_1$ không ánh xạ $[1,2]$ vào chính nó. 
+  Ngoài ra, $g_1'(x) = 1 - 3x^2 - 8x$, và $|g_1'(x)| > 1$ với mọi $x \in [1,2]$. 
+  Do đó, không có lý do để mong đợi sự hội tụ, và thực tế dãy lặp phân kỳ.
+
+  \item[(b)] Với $g_2(x) = \sqrt{\tfrac{10}{x} - 4x}$, dễ thấy $g_2$ không ánh xạ $[1,2]$ vào $[1,2]$, và dãy $\{p_n\}$ không xác định khi bắt đầu từ $p_0 = 1.5$. 
+  Ngoài ra, $|g_2'(p)| \approx 3.4 > 1$, nên điều kiện hội tụ của Định lý điểm cố địnhkhông thỏa mãn. 
+  Vì vậy, không thể mong đợi hội tụ.
+
+  \item[(c)] Với $g_3(x) = \tfrac{1}{2}\sqrt{10 - x^3}$, ta có $g_3'(x) = -\tfrac{3}{4}x^2(10 - x^3)^{-1/2} < 0$ trên $[1,2]$, 
+  tức là $g_3$ giảm nghiêm ngặt. Tuy nhiên, $|g_3'(2)| \approx 2.12 > 1$, nên điều kiện của Định lý điểm cố định không thỏa trên toàn khoảng $[1,2]$. 
+  Nhưng nếu thu hẹp miền lại còn $[1,1.5]$, thì $g_3$ ánh xạ $[1,1.5]$ vào chính nó và $|g_3'(x)| \leq 0.66 < 1$, 
+  do đó hội tụ được đảm bảo (như đã quan sát trong Bảng~\ref{tab:fixedpoint-illustration}).
+
+  \item[(d)] Với $g_4(x) = \sqrt{\tfrac{10}{x+4}}$, ta có $|g_4'(x)| < 0.15$ với mọi $x \in [1,2]$. 
+  Theo Hệ quả điểm cố định, phương pháp này phải hội tụ rất nhanh, và thực tế cho thấy đúng như vậy.
+
+  \item[(e)] Với 
+  \[
+  g_5(x) = x - \frac{x^3 + 4x^2 - 10}{3x^2 + 8x},
+  \]
+  ta thu được công thức Newton áp dụng cho phương trình $f(x) = 0$. 
+  Đây là lý do giải thích tại sao cột (e) trong Bảng~\ref{tab:fixedpoint-illustration} cho thấy sự hội tụ cực kỳ nhanh (hội tụ bậc hai).
+\end{itemize}
