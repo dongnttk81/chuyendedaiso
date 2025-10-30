@@ -1,3 +1,546 @@
-\chapter{Chương 7}
+\chapter{Các Kỹ thuật Lặp trong Đại số Ma trận (Matrix Algebra)}
 
-    
+\section{Giới thiệu một số khái niệm cơ bản}
+
+Để giải hệ phương trình tuyến tính $Ax=b$, người ta có thể sử dụng các \textit{phương pháp trực tiếp} (như phép khử Gauss). 
+Tuy nhiên, trong nhiều bài toán thực tế, đặc biệt là khi giải các phương 
+trình vi phân, chúng ta gặp các hệ phương trình tuyến tính có kích thước cực lớn và ma trận $A$ là 
+\textbf{ma trận thưa} (sparse matrix), tức là có tỉ lệ các phần tử bằng 0 rất cao.
+
+Trong những trường hợp này, các phương pháp trực tiếp trở nên kém hiệu quả và tốn kém bộ nhớ. 
+Thay vào đó, chúng ta sử dụng các \textbf{phương pháp lặp} (iterative methods). 
+Các phương pháp này bắt đầu từ một nghiệm xấp xỉ ban đầu $x^{(0)}$ và xây dựng một dãy các nghiệm xấp xỉ
+ $x^{(1)}, x^{(2)}, \dots$ sao cho dãy này hội tụ về nghiệm đúng $x$.
+
+\section{Các khái niệm nền tảng}
+
+Để phân tích các phương pháp lặp, chúng ta cần các công cụ toán học cơ bản để đo lường "khoảng cách" giữa các 
+vector và phân tích sự hội tụ.
+
+\subsection{Chuẩn Vector và Ma trận}
+Để đo lường "khoảng cách" giữa các vector nghiệm xấp xỉ và kiểm tra sự hội tụ, ta cần một cách để đo "kích thước" 
+của vector. Khái niệm này được gọi là \textbf{chuẩn (norm)}.
+
+\subsubsection{Chuẩn Vector}
+Một \textbf{chuẩn vector} trên $\mathbb{R}^n$ là một hàm $||\cdot||$, gán cho mỗi vector $x$ một số thực không âm, 
+thỏa mãn các tính chất sau với mọi $x, y \in \mathbb{R}^n$ và mọi $\alpha \in \mathbb{R}$:
+\begin{itemize}
+    \item $||x||\ge0$
+    \item $||x||=0$ khi và chỉ khi $x=0$
+    \item $||\alpha x||=|\alpha|||x||$
+    \item $||x+y||\le||x||+||y||$ (Bất đẳng thức tam giác)
+\end{itemize}
+Hai chuẩn vector thông dụng nhất trong $\mathbb{R}^n$ là:
+\begin{itemize}
+    \item \textbf{Chuẩn $l_2$ (chuẩn Euclid):} $\|x\|_2 = \left( \sum_{i=1}^n x_i^2 \right)^{1/2}$. 
+    Đây chính là độ dài hình học thông thường của vector.
+    \item \textbf{Chuẩn $l_\infty$ (chuẩn vô cùng/chuẩn max):} $\|x\|_\infty = \max_{1 \le i \le n} |x_i|$.
+\end{itemize}
+Một dãy vector $\{x^{(k)}\}_{k=1}^{\infty}$ được gọi là \textbf{hội tụ} về $x$ (theo một chuẩn cho trước) 
+nếu $\lim_{k \to \infty} \|x^{(k)} - x\| = 0$. Trên $\mathbb{R}^n$, sự hội tụ theo mọi chuẩn là tương đương.
+
+\subsubsection{Chuẩn Ma trận}
+Một \textbf{chuẩn ma trận} thỏa mãn 5 tính chất (bốn tính chất như chuẩn vector, và thêm tính chất 
+$||AB||\le||A||||B||$). Một \textbf{chuẩn ma trận tự nhiên (natural norm)} được sinh ra (induced) bởi một chuẩn vector:
+$$||A|| = \max_{||x||=1} ||Ax||$$
+Chuẩn $l_\infty$ của ma trận $A=(a_{ij})$ có công thức tính rất đơn giản:
+$$||A||_{\infty} = \max_{1\le i\le n} \sum_{j=1}^{n} |a_{ij}| \quad \text{(Tổng hàng lớn nhất)}$$
+
+\subsection{Trị riêng và Bán kính phổ}
+Các phương pháp lặp mà chúng ta sẽ thảo luận đều biến đổi hệ $Ax=b$ về dạng phương trình điểm bất động $x = Tx + c$. 
+Sự hội tụ của phương pháp phụ thuộc hoàn toàn vào các tính chất của \textbf{ma trận lặp $T$}.
+
+\begin{itemize}
+    \item \textbf{Trị riêng (Eigenvalue)} $\lambda$ và \textbf{vector riêng (Eigenvector)} $x \neq 0$ của ma trận 
+    $T$ thỏa mãn phương trình $Tx = \lambda x$.
+    \item \textbf{Bán kính phổ (Spectral Radius)} của $T$, ký hiệu là $\rho(T)$, là trị riêng có giá trị tuyệt đối 
+    lớn nhất: $\rho(T) = \max |\lambda|$.
+\end{itemize}
+Một kết quả nền tảng là bán kính phổ luôn nhỏ hơn hoặc bằng bất kỳ chuẩn ma trận tự nhiên nào: $\rho(A)\le||A||$.
+
+
+\section{Các phương pháp lặp Jacobi và Gauss-Seidel}
+
+Các kỹ thuật lặp hiếm khi được sử dụng để giải các hệ tuyến tính có kích thước nhỏ. 
+Tuy nhiên, đối với các hệ có kích thước lớn với tỉ lệ phần tử bằng 0 cao (ma trận thưa), 
+các kỹ thuật này lại hiệu quả cả về mặt lưu trữ máy tính lẫn tính toán.
+
+\subsection{Phương pháp lặp Jacobi}
+Phương pháp lặp Jacobi thu được bằng cách giải phương trình thứ $i$ trong $Ax = b$ theo $x_i$ 
+(với điều kiện $a_{ii} \neq 0$):
+$$
+x_i = \sum_{\substack{j=1 \\ j \neq i}}^n \left(-\frac{a_{ij}x_j}{a_{ii}}\right) + \frac{b_i}{a_{ii}}, 
+\quad \text{với } i = 1, 2, \ldots, n.
+$$
+Với mỗi $k \geq 1$, ta sinh ra các thành phần $x_i^{(k)}$ của $x^{(k)}$ từ các thành phần của $x^{(k-1)}$ theo 
+công thức:
+$$
+x_i^{(k)} = \frac{1}{a_{ii}} \left[ \sum_{\substack{j=1 \\ j \neq i}}^n (-a_{ij} x_j^{(k-1)}) + b_i \right], 
+\quad i = 1, 2, \ldots, n. \quad 
+$$
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 1.}
+Xét hệ phương trình tuyến tính $Ax=b$ sau:
+\begin{align*}
+10x_{1} - x_{2} + 2x_{3} \phantom{+ 3x_4} &= 6, \\
+-x_{1} + 11x_{2} - x_{3} + 3x_{4} &= 25, \\
+2x_{1} - x_{2} + 10x_{3} - x_{4} &= -11, \\
+\phantom{-x_1} 3x_{2} - x_{3} + 8x_{4} &= 15.
+\end{align*}
+Hệ này có nghiệm duy nhất là $x=(1, 2, -1, 1)^t$. Sử dụng kỹ thuật lặp Jacobi để tìm nghiệm xấp xỉ, bắt đầu với 
+$x^{(0)}=(0,0,0,0)^{t}$ cho đến khi $\frac{||x^{(k)}-x^{(k-1)}||_{\infty}}{||x^{(k)}||_{\infty}}<10^{-3}$.
+
+\textbf{Giải.}
+
+Ta giải phương trình $E_i$ cho $x_i$ để có:
+\begin{align*}
+x_{1} &= \phantom{-0.1x_1} + \frac{1}{10}x_{2} - \frac{1}{5}x_{3} \phantom{+ \frac{3}{11}x_4} + \frac{3}{5}, \\
+x_{2} &= \frac{1}{11}x_{1} \phantom{+ \frac{1}{10}x_2} + \frac{1}{11}x_{3} - \frac{3}{11}x_{4} + \frac{25}{11}, \\
+x_{3} &= -\frac{1}{5}x_{1} + \frac{1}{10}x_{2} \phantom{+ \frac{1}{11}x_3} + \frac{1}{10}x_{4} - \frac{11}{10}, \\
+x_{4} &= \phantom{-\frac{1}{5}x_1} - \frac{3}{8}x_{2} + \frac{1}{8}x_{3} \phantom{+ \frac{1}{10}x_4} + \frac{15}{8}.
+\end{align*}
+Từ $x^{(0)}=(0,0,0,0)^{t}$, ta có $x^{(1)} = (0.6000, 2.2727, -1.1000, 1.8750)^t$. Các lần lặp tiếp theo được trình 
+bày trong bảng dưới đây.
+
+\begin{center}
+\captionof{table}{Kết quả lặp Jacobi cho Ví dụ 1 (Lần lặp 0-5)}
+\label{tab:jacobi_ex1_a}
+\begin{tabular}{l c c c c c c}
+\toprule
+$k$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+\midrule
+$x_1^{(k)}$ & 0.0000 & 0.6000 & 1.0473 & 0.9326 & 1.0152 & 0.9890 \\
+$x_2^{(k)}$ & 0.0000 & 2.2727 & 1.7159 & 2.0533 & 1.9537 & 2.0114 \\
+$x_3^{(k)}$ & 0.0000 & -1.1000 & -0.8052 & -1.0493 & -0.9681 & -1.0103 \\
+$x_4^{(k)}$ & 0.0000 & 1.8750 & 0.8852 & 1.1309 & 0.9739 & 1.0214 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\captionof{table}{Kết quả lặp Jacobi cho Ví dụ 1 (Lần lặp 6-10)}
+\label{tab:jacobi_ex1_b}
+\begin{tabular}{l c c c c c}
+\toprule
+$k$ & 6 & 7 & 8 & 9 & 10 \\
+\midrule
+$x_1^{(k)}$ & 1.0032 & 0.9981 & 1.0006 & 0.9997 & 1.0001 \\
+$x_2^{(k)}$ & 1.9922 & 2.0023 & 1.9987 & 2.0004 & 1.9998 \\
+$x_3^{(k)}$ & -0.9945 & -1.0020 & -0.9990 & -1.0004 & -0.9998 \\
+$x_4^{(k)}$ & 0.9944 & 1.0036 & 0.9989 & 1.0006 & 0.9998 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Ta dừng sau 10 lần lặp vì điều kiện dừng được thỏa mãn. 
+Nghiệm xấp xỉ là $x^{(10)} = (1.0001, 1.9998, -0.9998, 0.9998)^t$.
+\par\vspace{1ex}
+
+Phương pháp lặp $x^{(k)}=Tx^{(k-1)}+c$ có thể được viết dưới dạng ma trận. Ta tách ma trận $A$ thành:
+$A = D - L - U$
+trong đó $D$ là ma trận đường chéo, $-L$ là phần tam giác dưới (strictly lower-triangular), và $-U$ là phần tam giác 
+trên (strictly upper-triangular) của $A$.
+Hệ $Ax=b$ trở thành $(D-L-U)x = b$, hay $Dx = (L+U)x + b$.
+Nếu $D^{-1}$ tồn tại (tức là $a_{ii} \neq 0$), ta có:
+$$x = D^{-1}(L+U)x + D^{-1}b$$
+Đây chính là dạng ma trận của phương pháp Jacobi:
+$$x^{(k)} = T_j x^{(k-1)} + c_j, \quad \text{với } T_j = D^{-1}(L+U) \text{ và } c_j = D^{-1}b \quad $$
+
+\begin{algorithm}[htbp]
+\caption{Phương pháp lặp Jacobi}
+\label{alg:jacobi}
+\begin{algorithmic}[1]
+    \State \textbf{INPUT:} Số phương trình $n$; ma trận $A=(a_{ij})$; vector $b=(b_i)$; vector $XO = x^{(0)}$; 
+    sai số \texttt{TOL}; số lặp tối đa $N$.
+    \State \textbf{OUTPUT:} Nghiệm xấp xỉ $x=(x_i)$ hoặc thông báo thất bại.
+    \State Đặt $k \gets 1$.
+    \While{$k \le N$}
+        \For{$i \gets 1, \dots, n$}
+            \State Đặt $x_i \gets \frac{1}{a_{ii}} \left[ -\sum_{\substack{j=1 \\ j \neq i}}^n (a_{ij}XO_j) + b_i \right]$.
+        \EndFor
+        \If{$\|x - XO\| < \texttt{TOL}$}
+            \State \Return ($x_1, \dots, x_n$) \Comment{Thành công}
+        \EndIf
+        \State Đặt $k \gets k+1$.
+        \State Cho $i \gets 1, \dots, n$: đặt $XO_i \gets x_i$.
+    \EndWhile
+    \State \Return ('Vượt quá số lần lặp tối đa') \Comment{Thất bại}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Phương pháp lặp Gauss-Seidel}
+Một cải tiến của phương pháp Jacobi là: khi tính $x_i^{(k)}$, ta nhận thấy các giá trị $x_1^{(k)}, \dots, 
+x_{i-1}^{(k)}$ vừa được tính ở cùng bước lặp $k$. Các giá trị "mới" này được kỳ vọng là tốt hơn các giá trị "cũ" 
+$x_1^{(k-1)}, \dots, x_{i-1}^{(k-1)}$.
+Phương pháp Gauss-Seidel sử dụng ngay các giá trị mới nhất vừa tính được:
+$$
+x_i^{(k)} = \frac{1}{a_{ii}} \left[ -\sum_{j=1}^{i-1} a_{ij}x_j^{(k)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k-1)} + 
+b_i \right], \quad i = 1, \dots, n. \quad
+$$
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 3.}
+Sử dụng phương pháp Gauss-Seidel cho hệ phương trình trong Ví dụ 1, bắt đầu với $x^{(0)}=(0,0,0,0)^{t}$ và 
+$\texttt{TOL} = 10^{-3}$.
+
+\textbf{Giải.}
+Sử dụng các phương trình đã biến đổi từ Ví dụ 1, nhưng cập nhật ngay lập tức:
+\begin{align*}
+x_{1}^{(k)} &= \phantom{0.1x_1^{(k)}} + \frac{1}{10}x_{2}^{(k-1)} - \frac{1}{5}x_{3}^{(k-1)} \phantom{+ \frac{3}{11}x_4^{(k-1)}} + \frac{3}{5}, \\
+x_{2}^{(k)} &= \frac{1}{11}x_{1}^{(k)} \phantom{+ \frac{1}{10}x_2^{(k)}} + \frac{1}{11}x_{3}^{(k-1)} - \frac{3}{11}x_{4}^{(k-1)} + \frac{25}{11}, \\
+x_{3}^{(k)} &= -\frac{1}{5}x_{1}^{(k)} + \frac{1}{10}x_{2}^{(k)} \phantom{+ \frac{1}{11}x_3^{(k-1)}} + \frac{1}{10}x_{4}^{(k-1)} - \frac{11}{10}, \\
+x_{4}^{(k)} &= \phantom{-\frac{1}{5}x_1^{(k)}} - \frac{3}{8}x_{2}^{(k)} + \frac{1}{8}x_{3}^{(k)} \phantom{+ \frac{1}{10}x_4^{(k-1)}} + \frac{15}{8}.
+\end{align*}
+Với $x^{(0)}=(0,0,0,0)^{t}$, ta có $x^{(1)}$:
+\begin{align*}
+x_{1}^{(1)} &= \phantom{0.1(0)} + \frac{1}{10}(0) - \frac{1}{5}(0) \phantom{+ \frac{3}{11}(0)} + \frac{3}{5} = 0.6000, \\
+x_{2}^{(1)} &= \frac{1}{11}(0.6000) \phantom{+ \frac{1}{10}(0)} + \frac{1}{11}(0) - \frac{3}{11}(0) + \frac{25}{11} \approx 2.3272, \\
+x_{3}^{(1)} &= -\frac{1}{5}(0.6000) + \frac{1}{10}(2.3272) \phantom{+ \frac{1}{11}(0)} + \frac{1}{10}(0) - \frac{11}{10} \approx -0.9873, \\
+x_{4}^{(1)} &= \phantom{-\frac{1}{5}(0.6)} - \frac{3}{8}(2.3272) + \frac{1}{8}(-0.9873) \phantom{+ \frac{1}{10}(0)} + \frac{15}{8} \approx 0.8789.
+\end{align*}
+Các lần lặp tiếp theo được trình bày trong Bảng dưới.
+\begin{center}
+\captionof{table}{Kết quả lặp Gauss-Seidel cho Ví dụ}
+\label{tab:gauss_seidel_ex3}
+\begin{tabular}{l c c c c c c}
+\toprule
+$k$ & 0 & 1 & 2 & 3 & 4 & 5 \\
+\midrule
+$x_1^{(k)}$ & 0.0000 & 0.6000 & 1.0300 & 1.0065 & 1.0009 & 1.0001 \\
+$x_2^{(k)}$ & 0.0000 & 2.3272 & 2.0370 & 2.0036 & 2.0003 & 2.0000 \\
+$x_3^{(k)}$ & 0.0000 & -0.9873 & -1.0140 & -1.0025 & -1.0003 & -1.0000 \\
+$x_4^{(k)}$ & 0.0000 & 0.8789 & 0.9844 & 0.9983 & 0.9999 & 1.0000 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Ta dừng sau 5 lần lặp vì điều kiện dừng được thỏa mãn. 
+Lưu ý rằng phương pháp Gauss-Seidel chỉ cần 5 lần lặp, trong khi phương pháp Jacobi cần 10 lần lặp để đạt cùng 
+độ chính xác.
+\par\vspace{1ex}
+
+Dạng ma trận của Gauss-Seidel là:
+$$ (D-L)x^{(k)} = Ux^{(k-1)} + b $$
+$$ x^{(k)} = (D-L)^{-1}U x^{(k-1)} + (D-L)^{-1}b $$
+Hay $x^{(k)} = T_g x^{(k-1)} + c_g$, với $T_g = (D-L)^{-1}U$ và $c_g = (D-L)^{-1}b$.
+
+\begin{algorithm}[htbp]
+\caption{Phương pháp lặp Gauss-Seidel (Algorithm 7.2)}
+\label{alg:gauss_seidel}
+\begin{algorithmic}[1]
+    \State \textbf{INPUT:} Số $n$; ma trận $A=(a_{ij})$; vector $b=(b_i)$; vector $XO = x^{(0)}$; 
+    sai số \texttt{TOL}; số lặp tối đa $N$.
+    \State \textbf{OUTPUT:} Nghiệm xấp xỉ $x=(x_i)$ hoặc thông báo thất bại.
+    \State Đặt $k \gets 1$.
+    \While{$k \le N$}
+        \For{$i \gets 1, \dots, n$}
+            \State Đặt $x_i \gets \frac{1}{a_{ii}} \left[ -\sum_{j=1}^{i-1} a_{ij}x_j - \sum_{j=i+1}^{n} a_{ij}XO_j + b_i \right]$.
+        \EndFor
+        \If{$\|x - XO\| < \texttt{TOL}$}
+            \State \Return ($x_1, \dots, x_n$) \Comment{Thành công}
+        \EndIf
+        \State Đặt $k \gets k+1$.
+        \State Cho $i \gets 1, \dots, n$: đặt $XO_i \gets x_i$.
+    \EndWhile
+    \State \Return ('Vượt quá số lần lặp tối đa') \Comment{Thất bại}
+\end{algorithmic}
+\end{algorithm}
+
+\subsection{Phân tích Hội tụ}
+Kết quả lý thuyết quan trọng nhất để xác định sự hội tụ của phương pháp lặp $x^{(k)}=Tx^{(k-1)}+c$ được cho 
+bởi các định lý sau:
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.17.}
+\textit{Các mệnh đề sau là tương đương:
+\begin{itemize}
+    \item[(i)] A là một ma trận hội tụ (tức là $\lim_{k\to\infty} (A^k)_{ij} = 0$ với mọi $i,j$).
+    \item[(ii)] $\lim_{n\to\infty}||A^{n}||=0$ với một chuẩn tự nhiên nào đó.
+    \item[(iii)] $\lim_{n\to\infty}||A^{n}||=0$ với mọi chuẩn tự nhiên.
+    \item[(iv)] $\rho(A)<1$ (Bán kính phổ của A nhỏ hơn 1).
+    \item[(v)] $\lim_{n\to\infty}A^{n}x=0$, với mọi vector x.
+\end{itemize}}
+\par\vspace{1ex}
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.19.}
+\textit{Với mọi $x^{(0)}\in\mathbb{R}^{n}$, dãy $\{x^{(k)}\}_{k=0}^{\infty}$ xác định bởi 
+$$x^{(k)}=Tx^{(k-1)}+c, \quad \text{với } k \ge 1,$$ 
+hội tụ đến nghiệm duy nhất của $x=Tx+c$ \textbf{khi và chỉ khi} $\rho(T)<1$.}
+\par\vspace{1ex}
+
+\noindent Kết quả này là cho ta 1 nhận xét quan trọng: phương pháp lặp hội tụ khi và chỉ khi bán kính phổ của ma trận lặp $T$ 
+(dù là $T_j$ hay $T_g$) nhỏ hơn 1. Tốc độ hội tụ phụ thuộc vào $\rho(T)$. Ta muốn $\rho(T)$ càng nhỏ càng tốt.
+
+\par\vspace{1ex}
+\noindent\textbf{Hệ quả 7.20.}
+\textit{Nếu $\|T\| < 1$ đối với một chuẩn ma trận tự nhiên bất kỳ, thì dãy $x^{(k)} = T x^{(k-1)} + c$ hội tụ đến 
+nghiệm duy nhất $x = Tx+c$, và ta có các cận sai số sau:
+\begin{itemize}
+    \item[(i)] $\|x - x^{(k)}\| \le \|T\|^k \|x^{(0)} - x\|$;
+    \item[(ii)] $\|x - x^{(k)}\| \le \frac{\|T\|^k}{1 - \|T\|} \|x^{(1)} - x^{(0)}\|$.
+\end{itemize}}
+\par\vspace{1ex}
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.21.}
+\textit{Nếu A là ma trận \textbf{chéo trội nghiêm ngặt} (strictly diagonally dominant), thì với mọi lựa chọn 
+$x^{(0)}$, cả hai phương pháp Jacobi và Gauss-Seidel đều hội tụ đến nghiệm duy nhất của $Ax=b$.}
+\par\vspace{1ex}
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.22 (Stein-Rosenberg).}
+\textit{Nếu $a_{ij} \le 0$ với mọi $i \neq j$ và $a_{ii} > 0$ với mọi $i$, thì chỉ một trong các trường hợp sau xảy ra:
+\begin{itemize}
+    \item[(i)] $0 \le \rho(T_g) < \rho(T_j) < 1$ (Cả hai hội tụ, Gauss-Seidel nhanh hơn)
+    \item[(ii)] $1 < \rho(T_j) < \rho(T_g)$ (Cả hai phân kỳ, Gauss-Seidel phân kỳ nhanh hơn)
+    \item[(iii)] $\rho(T_j) = \rho(T_g) = 0$
+    \item[(iv)] $\rho(T_j) = \rho(T_g) = 1$
+\end{itemize}
+}
+\par\vspace{1ex}
+
+\section{Kỹ thuật Tăng tốc (Relaxation) cho Hệ Tuyến tính}
+
+Tốc độ hội tụ của phương pháp lặp phụ thuộc vào $\rho(T)$. Ta muốn chọn phương pháp có $\rho(T)$ nhỏ nhất.
+
+\subsection{Vector Dư và Phương pháp SOR}
+Ta định nghĩa \textbf{vector dư (residual vector)} cho một nghiệm xấp xỉ $\tilde{x}$ là $r = b - A\tilde{x}$. 
+Mục tiêu ở đây là làm cho $r$ hội tụ về $\mathbf{0}$.
+
+Hãy xem lại phương pháp Gauss-Seidel. Khi ta chuẩn bị tính $x_i^{(k)}$, ta đang có vector xấp xỉ $x_{i}^{(k)} = (x_{1}^{(k)}, 
+\dots, x_{i-1}^{(k)}, x_{i}^{(k-1)}, \dots, x_{n}^{(k-1)})^t$. 
+
+Thành phần thứ $i$ của vector dư tại bước này là:
+$$ r_{ii}^{(k)} = b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k)} - a_{ii}x_i^{(k-1)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k-1)} $$
+Sắp xếp lại, ta có:
+$$ a_{ii}x_i^{(k-1)} + r_{ii}^{(k)} = b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k)} - \sum_{j=i+1}^{n} a_{ij}x_j^{(k-1)} $$
+Công thức Gauss-Seidel chính là đặt vế phải bằng $a_{ii}x_i^{(k)}$. Do đó:
+$$ a_{ii}x_i^{(k-1)} + r_{ii}^{(k)} = a_{ii}x_i^{(k)} \implies x_i^{(k)} = x_i^{(k-1)} + 
+\frac{r_{ii}^{(k)}}{a_{ii}} $$
+Nói cách khác, ở mỗi bước sẽ điều chỉnh $x_i$ một lượng bằng $r_{ii}^{(k)}/a_{ii}$ để làm cho thành phần 
+thứ $i$ của vector dư tiếp theo bằng 0.
+
+Các phương pháp \textbf{Relaxation} (điều hòa) tổng quát hóa bước này bằng cách đưa vào một tham số $\omega$:
+$$ x_i^{(k)} = x_i^{(k-1)} + \omega \frac{r_{ii}^{(k)}}{a_{ii}} \quad  $$
+Hoặc, ở dạng tính toán:
+$$ x_i^{(k)} = (1-\omega)x_i^{(k-1)} + \frac{\omega}{a_{ii}} \left[ b_i - \sum_{j=1}^{i-1} a_{ij}x_j^{(k)} - 
+\sum_{j=i+1}^{n} a_{ij}x_j^{(k-1)} \right] $$
+\begin{itemize}
+    \item $0 < \omega < 1$: gọi là \textbf{under-relaxation} (giảm tốc), dùng để ổn định các hệ phân kỳ.
+    \item $\omega > 1$: gọi là \textbf{Successive Over-Relaxation (SOR)} (tăng tốc), dùng để tăng tốc các hệ hội tụ.
+    \item $\omega = 1$: chính là phương pháp Gauss-Seidel.
+\end{itemize}
+Dạng ma trận của SOR là $x^{(k)} = T_\omega x^{(k-1)} + c_\omega$, với:
+$$ T_\omega = (D - \omega L)^{-1} [(1-\omega)D + \omega U] \quad \text{và} \quad c_\omega = \omega(D - \omega L)^{-1} 
+b \quad $$
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 1 (Mục 7.4).}
+Hệ $4x_1 + 3x_2 = 24$, $3x_1 + 4x_2 - x_3 = 30$, $-x_2 + 4x_3 = -24$ có nghiệm $(3, 4, -5)^t$. 
+So sánh Gauss-Seidel ($\omega=1$) và SOR ($\omega=1.25$) với $x^{(0)}=(1,1,1)^t$.
+
+\textbf{Giải.}
+Phương trình lặp Gauss-Seidel ($\omega=1$):
+\begin{align*}
+x_{1}^{(k)} &= -0.75x_{2}^{(k-1)}+6 \\
+x_{2}^{(k)} &= -0.75x_{1}^{(k)}+0.25x_{3}^{(k-1)}+7.5 \\
+x_{3}^{(k)} &= \phantom{-0.75x_1^{(k)}} + 0.25x_{2}^{(k)} - 6
+\end{align*}
+Phương trình lặp SOR ($\omega=1.25$):
+\begin{align*}
+x_{1}^{(k)} &= -0.25x_{1}^{(k-1)} - 0.9375x_{2}^{(k-1)} + 7.5 \\
+x_{2}^{(k)} &= -0.9375x_{1}^{(k)} - 0.25x_{2}^{(k-1)} + 0.3125x_{3}^{(k-1)} + 9.375 \\
+x_{3}^{(k)} &= \phantom{-0.9375x_1^{(k)}} + 0.3125x_{2}^{(k)} - 0.25x_{3}^{(k-1)} - 7.5
+\end{align*}
+Kết quả 7 lần lặp đầu tiên được cho trong các bảng dưới.
+
+\begin{center}
+\captionof{table}{Gauss-Seidel ($\omega=1$)}
+\label{tab:gauss_seidel_ex_7_4}
+\begin{tabular}{l c c c c c c c c}
+\toprule
+$k$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\midrule
+$x_1^{(k)}$ & 1.0 & 5.2500 & 3.8125 & 3.1406 & 3.0879 & 3.0549 & 3.0343 & 3.0215 \\
+$x_2^{(k)}$ & 1.0 & 3.8125 & 3.8828 & 3.9268 & 3.9542 & 3.9714 & 3.9821 & 3.9888 \\
+$x_3^{(k)}$ & 1.0 & -5.0469 & -5.0293 & -5.0183 & -5.0114 & -5.0072 & -5.0045 & -5.0028 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+\begin{center}
+\captionof{table}{SOR ($\omega=1.25$)}
+\label{tab:sor_ex_7_4}
+\begin{tabular}{l c c c c c c c c}
+\toprule
+$k$ & 0 & 1 & 2 & 3 & 4 & 5 & 6 & 7 \\
+\midrule
+$x_1^{(k)}$ & 1.0 & 6.3125 & 3.5195 & 2.6223 & 3.1333 & 2.9571 & 3.0037 & 2.9963 \\
+$x_2^{(k)}$ & 1.0 & 3.5195 & 3.9585 & 4.0103 & 4.0075 & 4.0029 & 4.0009 & 4.0003 \\
+$x_3^{(k)}$ & 1.0 & -6.6501 & -4.6004 & -5.0967 & -4.9735 & -5.0057 & -4.9983 & -5.0003 \\
+\bottomrule
+\end{tabular}
+\end{center}
+
+Để đạt độ chính xác $10^{-7}$, Gauss-Seidel cần 34 lần lặp, trong khi SOR (với $\omega=1.25$) chỉ cần 14 lần lặp.
+\par\vspace{1ex}
+
+Như vậy, rõ ràng việc chọn $\omega$ tối ưu là rất quan trọng. Ta có các định lý sau đây về việc lựa chọn $\omega$
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.24 (Kahan).}
+\textit{Nếu $a_{ii} \neq 0$ với mọi $i$, thì $\rho(T_\omega) \ge |\omega - 1|$. 
+Điều này suy ra rằng phương pháp SOR \textbf{chỉ có thể hội tụ nếu $0 < \omega < 2$}.}
+\par\vspace{1ex}
+
+\noindent\textbf{Định lý 7.25 (Ostrowski-Reich).}
+\textit{Nếu A là ma trận \textbf{xác định dương} (positive definite) và $0 < \omega < 2$, 
+thì phương pháp SOR hội tụ với mọi vector ban đầu $x^{(0)}$.}
+\par\vspace{1ex}
+
+\noindent\textbf{Định lý 7.26.}
+\textit{Nếu A là ma trận \textbf{xác định dương và tam tuyến (tridiagonal)}, 
+thì $\rho(T_g) = [\rho(T_j)]^2 < 1$, và giá trị $\omega$ tối ưu cho SOR là:
+$$ \omega = \frac{2}{1 + \sqrt{1 - [\rho(T_j)]^2}} $$
+Với lựa chọn này, $\rho(T_\omega) = \omega - 1$.}
+\par\vspace{1ex}
+
+\begin{algorithm}[htbp]
+\caption{Phương pháp SOR}
+\label{alg:sor}
+\begin{algorithmic}[1]
+    \State \textbf{INPUT:} Số $n$; ma trận $A=(a_{ij})$; vector $b=(b_i)$; vector $XO = x^{(0)}$; 
+    tham số $\omega$; sai số \texttt{TOL}; số lặp tối đa $N$.
+    \State \textbf{OUTPUT:} Nghiệm xấp xỉ $x=(x_i)$ hoặc thông báo thất bại.
+    \State Đặt $k \gets 1$.
+    \While{$k \le N$}
+        \For{$i \gets 1, \dots, n$}
+            \State Đặt $x_i \gets (1-\omega)XO_i + \frac{\omega}{a_{ii}} \left[ b_i - \sum_{j=1}^{i-1} a_{ij}x_j - 
+            \sum_{j=i+1}^{n} a_{ij}XO_j \right]$.
+        \EndFor
+        \If{$\|x - XO\| < \texttt{TOL}$}
+            \State \Return ($x_1, \dots, x_n$) \Comment{Thành công}
+        \EndIf
+        \State Đặt $k \gets k+1$.
+        \State Cho $i \gets 1, \dots, n$: đặt $XO_i \gets x_i$.
+    \EndWhile
+    \State \Return ('Vượt quá số lần lặp tối đa') \Comment{Thất bại}
+\end{algorithmic}
+\end{algorithm}
+
+\section{Cận sai số (Error Bound) và Tinh chỉnh Lặp (Iterative Refinement)}
+
+\subsection{Số điều kiện và Nghịch lý Vector Dư}
+Một cách trực quan để kiểm tra nghiệm xấp xỉ $\tilde{x}$ của $Ax=b$ là tính vector phần dư $r = b - A\tilde{x}$. 
+Ta thường nghĩ rằng nếu $||r||$ nhỏ, thì sai số $||x - \tilde{x}||$ cũng nhỏ. 
+Tuy nhiên, điều này có thể sai hoàn toàn. Hãy xem xét ví dụ dưới đây:
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 1}
+Hệ tuyến tính 
+$$ \begin{pmatrix} 1 & 2 \\ 1.0001 & 2 \end{pmatrix} \begin{pmatrix} x_1 \\ x_2 \end{pmatrix} = \begin{pmatrix} 3 \\ 3.0001 \end{pmatrix} $$
+có nghiệm đúng $x=(1,1)^t$.
+
+Xét một xấp xỉ rất tồi: $\tilde{x}=(3, -0.0001)^t$.
+
+Sai số thực sự là $||x - \tilde{x}||_\infty = \max\{|1-3|, |1 - (-0.0001)|\} = 2$.
+
+Tuy nhiên, vector phần dư lại rất nhỏ:
+$$ r = b - A\tilde{x} = \begin{pmatrix} 3 \\ 3.0001 \end{pmatrix} - \begin{pmatrix} 1 & 2 \\ 1.0001 & 2 \end{pmatrix} \begin{pmatrix} 3 \\ -0.0001 \end{pmatrix} = \begin{pmatrix} 0.0002 \\ 0 \end{pmatrix} $$
+Vậy $||r||_\infty = 0.0002$. 
+Sai số rất lớn, nhưng vector dư lại rất nhỏ!
+
+Nguyên nhân là do nghiệm của hệ là giao điểm của hai đường thẳng:
+\begin{itemize}
+    \item $l_1: x_1 + 2x_2 = 3 \implies x_2 = -0.5 x_1 + 1.5$
+    \item $l_2: 1.0001x_1 + 2x_2 = 3.0001 \implies x_2 = -0.50005 x_1 + 1.50005$
+\end{itemize}
+Hai đường thẳng này có hệ số góc ($-0.5$ và $-0.50005$) gần như y hệt nhau, tức là chúng \textbf{gần như song song}.
+
+Điểm $\tilde{x}=(3, -0.0001)$ nằm rất gần (hoặc trên) đường $l_2$. 
+Vì $l_1$ và $l_2$ gần như trùng nhau, điểm này cũng nằm rất gần $l_1$. Điều này lý giải tại sao vector dư $r$ (khoảng cách đến vế phải $b$) rất nhỏ, mặc dù $\tilde{x}$ ở rất xa giao điểm thực sự là $(1, 1)$.
+\par\vspace{1ex}
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig_7.7.png}
+    \caption{Đồ thị 2 đường thẳng trong ví dụ 1}
+    \label{fig:fig_7.7}
+\end{figure}
+
+Hiện tượng này xảy ra ở các hệ \textbf{bị điều kiện hóa xấu (ill-conditioned)}.
+Ta định nghĩa \textbf{số điều kiện (condition number)} của ma trận $A$ (so với một chuẩn) là:
+$$ K(A) = \|A\| \cdot \|A^{-1}\| $$
+Một ma trận là "well-conditioned" (điều kiện tốt) nếu $K(A)$ gần 1, và "ill-conditioned" (điều kiện xấu) 
+nếu $K(A)$ rất lớn.
+Với ma trận trong Ví dụ 1, $K_\infty(A) = 60002$, một giá trị rất lớn, khẳng định ma trận có điều kiện rất xấu.
+
+Chúng ta có định lý sau đây về sai số của nghiệm:
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 7.27.}
+\textit{Giả sử $\tilde{x}$ là nghiệm xấp xỉ của $Ax=b$ và $r$ là vector dư. Khi đó, với mọi chuẩn tự nhiên:
+$$ ||x - \tilde{x}|| \le ||A^{-1}|| \cdot ||r|| $$
+và nếu $x \neq 0, b \neq 0$:
+$$ \frac{||x - \tilde{x}||}{||x||} \le K(A) \frac{||r||}{||b||} $$}
+\par\vspace{1ex}
+Bất đẳng thức thứ hai giải thích mọi thứ: \textbf{Sai số tương đối của nghiệm} bị chặn bởi 
+\textbf{Số điều kiện (Conditional Number)} nhân với \textbf{vector dư tương đối}. Nếu $K(A)$ lớn, sai số nghiệm có thể lớn ngay cả khi vector dư nhỏ.
+
+\subsection{Kỹ thuật Tinh chỉnh Lặp (Iterative Refinement)}
+Ta có thể ước lượng sai số $e = x - \tilde{x}$ bằng cách giải hệ $Ay = r$, vì $A(x - \tilde{x}) = Ax - A\tilde{x} 
+= b - A\tilde{x} = r$.
+Kỹ thuật Tinh chỉnh Lặp (hay Cải thiện Lặp) dựa trên ý tưởng này để cải thiện nghiệm đã tính (thường bằng phép khử 
+Gauss).
+
+\begin{algorithm}[htbp]
+\caption{Tinh chỉnh Lặp (Iterative Refinement)}
+\label{alg:refinement}
+\begin{algorithmic}[1]
+    \State \textbf{INPUT:} Số $n$; ma trận $A$; vector $b$; số lặp tối đa $N$; sai số \texttt{TOL}; 
+    số chữ số có nghĩa $t$.
+    \State \textbf{OUTPUT:} Nghiệm xấp xỉ $xx$ và ước lượng số điều kiện $COND$.
+    \State \textbf{Bước 0:} Giải hệ $Ax=b$ bằng phép khử Gauss (với $t$ chữ số), thu được $x=(x_1, \dots, x_n)^t$. 
+    Lưu lại các phép biến đổi (phân rã $LU$ và các phép hoán vị).
+    \State Đặt $k \gets 1$.
+    \While{$k \le N$}
+        \State Tính vector dư $r = b - Ax$. (Quan trọng: \textbf{Phải thực hiện bằng độ chính xác cao hơn}, 
+        ví dụ double precision, $2t$ chữ số).
+        \State Giải hệ tuyến tính $Ay = r$ để tìm $y=(y_1, \dots, y_n)^t$. (Sử dụng lại phép phân rã $LU$ từ Bước 0).
+        \State Cập nhật nghiệm: $xx \gets x + y$.
+        \If{$k=1$}
+            \State Ước lượng $COND \gets \frac{||y||_\infty}{||xx||_\infty} 10^t$.
+        \EndIf
+        \If{$||x - xx||_\infty < \texttt{TOL}$ (hoặc $||y||_\infty < \texttt{TOL}$)}
+            \State \Return (xx, COND)
+        \EndIf
+        \State Đặt $k \gets k+1$.
+        \State Đặt $x \gets xx$.
+    \EndWhile
+    \State \Return ('Vượt quá số lần lặp', COND)
+\end{algorithmic}
+\end{algorithm}
+
+Kỹ thuật này cực kỳ hiệu quả. Nếu $K(A) \approx 10^q$, sau $k$ lần tinh chỉnh, nghiệm sẽ có khoảng $k(t-q)$ chữ số đúng.
+
+
+\section{Tổng kết chương}
+
+Trong chương này, chúng ta đã nghiên cứu các kỹ thuật lặp để xấp xỉ nghiệm của các hệ tuyến tính. 
+Chúng ta bắt đầu với phương pháp Jacobi và phương pháp Gauss-Seidel để giới thiệu về các phương pháp lặp. 
+Cả hai phương pháp đều yêu cầu một xấp xỉ ban đầu $x^{(0)}$ tùy ý và tạo ra một dãy các vector $x^{(i+1)}$ bằng cách 
+sử dụng một phương trình có dạng:
+$$ x^{(i+1)} = Tx^{(i)} + c $$
+Một điểm mấu chốt đã được lưu ý là phương pháp sẽ hội tụ \textbf{khi và chỉ khi} bán kính phổ của ma trận lặp 
+$\rho(T) < 1$, và bán kính phổ càng nhỏ thì tốc độ hội tụ càng nhanh.
+
+Việc phân tích các vector dư (residual vectors) của kỹ thuật Gauss-Seidel đã dẫn đến phương pháp lặp 
+\textbf{SOR (Successive Over-Relaxation)}, vốn sử dụng một tham số $\omega$ để tăng tốc độ hội tụ.
+
+Các phương pháp lặp này và các biến thể của chúng được sử dụng rộng rãi trong việc giải các hệ phương trình tuyến 
+tính phát sinh từ việc giải số các bài toán giá trị biên và phương trình vi phân riêng phần. 
+Các hệ thống này thường rất lớn (có thể lên đến 10,000 phương trình) và \textbf{thưa} (sparse), 
+với các phần tử khác không nằm ở các vị trí có thể dự đoán được. 
+Các phương pháp lặp cũng hữu ích cho các hệ thưa lớn khác và dễ dàng được điều chỉnh để sử dụng hiệu quả trên 
+các máy tính song song.

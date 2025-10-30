@@ -1,13 +1,43 @@
 
 \babel@toc {english}{}\relax 
 \contentsline {chapter}{\numberline {1}Nghiệm của phương trình một ẩn}{1}{chapter.1}%
-\contentsline {section}{\numberline {1.1}Phương pháp chia đổi (The Bisection Method)}{1}{section.1.1}%
+\contentsline {section}{\numberline {1.1}Phương pháp chia đôi (The Bisection Method)}{1}{section.1.1}%
 \contentsline {section}{\numberline {1.2}Phương pháp lặp điểm cố định (Fixed-Point Iteration)}{4}{section.1.2}%
 \contentsline {section}{\numberline {1.3}Phương pháp Newton và các mở rộng}{8}{section.1.3}%
 \contentsline {section}{\numberline {1.4}Phân tích sai số cho các phương pháp lặp (Error Analysis for Iterative Methods)}{15}{section.1.4}%
 \contentsline {section}{\numberline {1.5}Tăng tốc độ hội tụ(Accelerating Convergence)}{18}{section.1.5}%
-\contentsline {chapter}{\numberline {2}Chương 2: Nghiệm của phương trình một ẩn}{23}{chapter.2}%
-\contentsline {chapter}{\numberline {3}Chương 7}{24}{chapter.3}%
-\contentsline {chapter}{Ph\d {u} l\d {u}c}{III}{appendix*.14}%
+\contentsline {section}{\numberline {1.6}Nghiệm của Đa thức và Phương pháp Muller}{22}{section.1.6}%
+\contentsline {subsection}{\numberline {1.6.1}Giới thiệu về Nghiệm của Đa thức}{22}{subsection.1.6.1}%
+\contentsline {subsection}{\numberline {1.6.2}Phương pháp Horner}{24}{subsection.1.6.2}%
+\contentsline {subsubsection}{Ứng dụng Tính Đạo hàm trong Phương pháp Newton}{25}{subsubsection*.13}%
+\contentsline {subsubsection}{Thuật toán Horner}{26}{subsubsection*.14}%
+\contentsline {subsection}{\numberline {1.6.3}Phép Giảm bậc (Deflation)}{26}{subsection.1.6.3}%
+\contentsline {subsection}{\numberline {1.6.4}Phương pháp Muller}{27}{subsection.1.6.4}%
+\contentsline {subsubsection}{Hạn chế của các Phương pháp (và Nghiệm phức)}{27}{subsubsection*.15}%
+\contentsline {subsubsection}{Ý tưởng: Xấp xỉ bằng Parabol}{27}{subsubsection*.16}%
+\contentsline {subsubsection}{Xây dựng Công thức Lặp}{27}{subsubsection*.18}%
+\contentsline {subsubsection}{Thuật toán Muller}{28}{subsubsection*.19}%
+\contentsline {subsubsection}{Ví dụ Minh họa}{28}{subsubsection*.20}%
+\contentsline {section}{\numberline {1.7}Các thư viện số học và Tổng kết Chương}{30}{section.1.7}%
+\contentsline {subsection}{\numberline {1.7.1}Tổng quan về các Phần mềm số}{30}{subsection.1.7.1}%
+\contentsline {subsection}{\numberline {1.7.2}Tổng kết Chương}{31}{subsection.1.7.2}%
+\contentsline {chapter}{\numberline {2}Các Kỹ thuật Lặp trong Đại số Ma trận (Matrix Algebra)}{33}{chapter.2}%
+\contentsline {section}{\numberline {2.1}Giới thiệu một số khái niệm cơ bản}{33}{section.2.1}%
+\contentsline {section}{\numberline {2.2}Các khái niệm nền tảng}{33}{section.2.2}%
+\contentsline {subsection}{\numberline {2.2.1}Chuẩn Vector và Ma trận}{33}{subsection.2.2.1}%
+\contentsline {subsubsection}{Chuẩn Vector}{33}{subsubsection*.22}%
+\contentsline {subsubsection}{Chuẩn Ma trận}{34}{subsubsection*.23}%
+\contentsline {subsection}{\numberline {2.2.2}Trị riêng và Bán kính phổ}{34}{subsection.2.2.2}%
+\contentsline {section}{\numberline {2.3}Các phương pháp lặp Jacobi và Gauss-Seidel}{34}{section.2.3}%
+\contentsline {subsection}{\numberline {2.3.1}Phương pháp lặp Jacobi}{35}{subsection.2.3.1}%
+\contentsline {subsection}{\numberline {2.3.2}Phương pháp lặp Gauss-Seidel}{37}{subsection.2.3.2}%
+\contentsline {subsection}{\numberline {2.3.3}Phân tích Hội tụ}{39}{subsection.2.3.3}%
+\contentsline {section}{\numberline {2.4}Kỹ thuật Tăng tốc (Relaxation) cho Hệ Tuyến tính}{40}{section.2.4}%
+\contentsline {subsection}{\numberline {2.4.1}Vector Dư và Phương pháp SOR}{40}{subsection.2.4.1}%
+\contentsline {section}{\numberline {2.5}Cận sai số (Error Bound) và Tinh chỉnh Lặp (Iterative Refinement)}{43}{section.2.5}%
+\contentsline {subsection}{\numberline {2.5.1}Số điều kiện và Nghịch lý Vector Dư}{43}{subsection.2.5.1}%
+\contentsline {subsection}{\numberline {2.5.2}Kỹ thuật Tinh chỉnh Lặp (Iterative Refinement)}{45}{subsection.2.5.2}%
+\contentsline {section}{\numberline {2.6}Tổng kết chương}{45}{section.2.6}%
+\contentsline {chapter}{Ph\d {u} l\d {u}c}{II}{appendix*.25}%
 \save@tocdepth \setcounter {tocdepth}{0}
 \reset@tocdepth 

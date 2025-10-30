@@ -1,4 +1,451 @@
-\chapter{Chương 2: Nghiệm của phương trình một ẩn}
+\section{Nghiệm của Đa thức và Phương pháp Muller}
 
+\subsection{Giới thiệu về Nghiệm của Đa thức}
 
+Một đa thức bậc $n$ có dạng tổng quát:
+$$ P(x) = a_n x^n + a_{n-1} x^{n-1} + \dots + a_1 x + a_0 $$
+trong đó $a_i$ là các hằng số (có thể là số thực hoặc phức) được gọi là \textit{hệ số}, và $a_n \neq 0$. 
+Bài toán tìm các giá trị $x$ sao cho $P(x) = 0$ là một trong những bài toán nền tảng và quan trọng nhất 
+trong toán học. 
+Các giá trị $x$ này được gọi là \textbf{nghiệm} (root/solution) của đa thức $P(x)$ hoặc 
+nghiệm của phương trình $P(x)=0$.
 
+\par\vspace{1ex}
+\noindent\textbf{Định lý 2.16 (Định lý Cơ bản của Đại số).}
+\textit{Nếu $P(x)$ là một đa thức bậc $n \ge 1$ với các hệ số thực hoặc phức, thì phương trình $P(x) = 0$ 
+có ít nhất một nghiệm (nghiệm này có thể là số phức).}
+\par\vspace{1ex}
+
+\textit{Giải thích:} Định lý này đảm bảo rằng mọi đa thức (không phải hằng số - bậc nhất trở lên) đều có ít nhất một nghiệm. 
+Đây này là nền tảng cho việc tìm nghiệm, vì nó khẳng định sự tồn tại của nghiệm mà chúng ta đang tìm. 
+Mặc dù tên gọi là "Định lý Cơ bản của Đại số", tuy nhiên việc chứng minh định lý này lại thường đòi hỏi các công cụ của giải tích phức. 
+(được chứng minh lần đầu bởi Gauss vào năm 1799)
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 1.}
+Xác định tất cả các nghiệm của đa thức $P(x)=x^{3}-5x^{2}+17x-13$.
+
+\textbf{Giải.}
+
+Ta dễ dàng kiểm tra (nhẩm nghiệm nguyên) rằng $P(1)=1-5+17-13=0$. 
+Do đó, $x=1$ là một nghiệm của $P$ và $(x-1)$ là một nhân tử của đa thức.
+Thực hiện phép chia đa thức $P(x)$ cho $(x-1)$, ta được:
+$$ P(x)=(x-1)(x^{2}-4x+13) $$
+Để xác định các nghiệm của $x^{2}-4x+13$, ta sử dụng công thức nghiệm bậc hai:
+$$ \frac{-(-4)\pm\sqrt{(-4)^{2}-4(1)(13)}}{2(1)}=\frac{4\pm\sqrt{16-52}}{2}=\frac{4\pm\sqrt{-36}}{2}=2\pm3i. $$
+Do đó, đa thức bậc ba $P(x)$ có ba nghiệm là: $x_{1}=1$, $x_{2}=2-3i$, và $x_{3}=2+3i$.
+\par\vspace{1ex}
+
+\par\vspace{1ex}
+\noindent\textbf{Hệ quả 2.17.}
+\textit{Nếu $P(x)$ là một đa thức bậc $n \ge 1$ với các hệ số thực hoặc phức, t
+hì tồn tại các hằng số duy nhất $x_1, x_2, \dots, x_k$ (có thể là số phức) và 
+các số nguyên dương duy nhất $m_1, m_2, \dots, m_k$ (gọi là \textbf{bội} của nghiệm) 
+sao cho $\sum_{i=1}^{k} m_i = n$ và
+$$ P(x) = a_n (x - x_1)^{m_1} (x - x_2)^{m_2} \cdots (x - x_k)^{m_k} $$.}
+\par\vspace{1ex}
+
+\textit{Giải thích:} Một đa thức bậc $n$ có \textbf{chính xác $n$ nghiệm} 
+trong tập số phức, \textit{nếu ta đếm cả số lần lặp lại của nghiệm} (tức là đếm theo bội).
+
+\par\vspace{1ex}
+\noindent\textbf{Hệ quả 2.18.}
+\textit{Giả sử $P(x)$ và $Q(x)$ là các đa thức có bậc không quá $n$. 
+Nếu $x_{1},x_{2},...,x_{k}$ (với $k>n$) là các số phân biệt thỏa mãn $P(x_{i})=Q(x_{i})$ với $i=1,2,...,k$, 
+thì $P(x)=Q(x)$ với mọi giá trị của $x$.}
+\par\vspace{1ex}
+
+Kết quả này cho thấy rằng để chứng minh hai đa thức có bậc nhỏ hơn hoặc bằng $n$ là giống nhau, 
+ta chỉ cần chứng minh rằng chúng trùng nhau tại $n+1$ giá trị phân biệt.
+
+\subsection{Phương pháp Horner}
+Để sử dụng phương pháp Newton nhằm tìm nghiệm xấp xỉ của một đa thức $P(x)$, chúng ta cần tính $P(x)$ và $P'(x)$ 
+tại những giá trị được cho trước. Phương pháp Horner là một thuật toán cực kỳ hiệu quả để thực hiện việc này.
+
+Ý tưởng cốt lõi của Horner là viết lại đa thức dưới dạng "lồng nhau" (nested form) để tối ưu hóa phép tính:
+$$ P(x) = (\dots((a_n x + a_{n-1})x + a_{n-2})x + \dots + a_1)x + a_0 $$
+Cách tính này chỉ yêu cầu $n$ phép nhân và $n$ phép cộng. 
+Phương pháp này còn được gọi là \textbf{phép chia tổng hợp (synthetic division)}. 
+Kỹ thuật này đã được biết đến ở Trung Quốc từ rất lâu trước khi Horner (1819) và Ruffini (trước đó) công bố.
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 2.19 (Phương pháp Horner).}
+\textit{Cho đa thức $P(x) = a_n x^n + \dots + a_0$.
+Đặt $b_n = a_n$ và
+$$ b_k = a_k + b_{k+1}x_0 \quad \text{cho} \quad k = n-1, n-2, \dots, 0. $$
+Khi đó, $b_0 = P(x_0)$.}
+\textit{Hơn nữa, nếu ta đặt $Q(x) = b_n x^{n-1} + b_{n-1} x^{n-2} + \dots + b_1$, thì:
+$$ P(x) = (x - x_0)Q(x) + b_0 $$
+Điều này có nghĩa là $Q(x)$ là thương và $b_0$ là số dư khi chia $P(x)$ cho $(x - x_0)$.}
+\par\vspace{1ex}
+
+\textit{Chứng minh:}
+Theo định nghĩa của $Q(x)$, ta có
+\begin{align*}
+(x-x_{0})Q(x)+b_{0} &= (x-x_{0})(b_{n}x^{n-1}+\cdot\cdot\cdot+b_{2}x+b_{1})+b_{0} \\
+&= (b_{n}x^{n}+b_{n-1}x^{n-1}+\cdot\cdot\cdot+b_{2}x^{2}+b_{1}x) - (b_{n}x_{0}x^{n-1}+\cdot\cdot\cdot+b_{2}x_{0}x+b_{1}x_{0})+b_{0} \\
+&= b_{n}x^{n}+(b_{n-1}-b_{n}x_{0})x^{n-1}+\cdot\cdot\cdot+(b_{1}-b_{2}x_{0})x+(b_{0}-b_{1}x_{0}).
+\end{align*}
+Theo giả thiết, 
+$b_{n}=a_{n}$ và $b_{k}-b_{k+1}x_{0}=a_{k}$ (do $b_k = a_k + b_{k+1}x_0$).
+Do đó, $(x-x_{0})Q(x)+b_{0}=P(x)$ và $b_{0}=P(x_{0})$. \hfill $\square$
+\par\vspace{1ex}
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 2.}
+Sử dụng phương pháp Horner để tính $P(x)=2x^{4}-3x^{2}+3x-4$ tại $x_{0}=-2$.
+
+\textbf{Giải.}
+Khi tính toán bằng tay, ta lập một lược đồ (bảng) chia tổng hợp như sau. Chú ý các hệ số của $x^3$ bằng 0.
+\begin{center}
+\begin{tabular}{c|l l l l l}
+\hline
+& Hệ số của $x^4$ & Hệ số của $x^3$ & Hệ số của $x^2$ & Hệ số của $x$ & Hạng tử hằng số \\
+& $a_4=2$ & $a_3=0$ & $a_2=-3$ & $a_1=3$ & $a_0=-4$ \\
+\cline{2-6}
+$x_0 = -2$ & & $b_4 x_0 = -4$ & $b_3 x_0 = 8$ & $b_2 x_0 = -10$ & $b_1 x_0 = 14$ \\
+\hline
+& $b_4=2$ & $b_3=-4$ & $b_2=5$ & $b_1=-7$ & $\mathbf{b_0=10}$ \\
+\hline
+\end{tabular}
+\end{center}
+Kết quả: $P(-2) = b_0 = 10$.
+Đa thức thương là $Q(x) = 2x^3 - 4x^2 + 5x - 7$, và ta có thể viết:
+$P(x)=(x+2)(2x^{3}-4x^{2}+5x-7)+10$.
+\par\vspace{1ex}
+
+\subsubsection{Ứng dụng Tính Đạo hàm trong Phương pháp Newton}
+Một ưu điểmcủa phương pháp Horner là nó giúp tính đạo hàm $P'(x_0)$ một cách rất hiệu quả.
+Từ $P(x) = (x-x_0)Q(x) + b_0$, ta lấy đạo hàm hai vế theo $x$:
+$$ P'(x) = Q(x) + (x-x_0)Q'(x) $$
+Thay $x = x_0$ vào, ta được:
+$$ P'(x_0) = Q(x_0) \quad (2.16) $$
+Như vậy, \textbf{giá trị đạo hàm $P'(x_0)$ chính bằng giá trị của đa thức thương $Q(x)$ tại điểm $x_0$}.
+
+\par\vspace{1ex}
+\noindent\textbf{Ví dụ 3.}
+Tìm nghiệm xấp xỉ cho $P(x)=2x^{4}-3x^{2}+3x-4$ bằng phương pháp Newton, 
+bắt đầu với $x_0 = -2$ và dùng phép chia tổng hợp (Horner) để tính $P(x_n)$ và $P'(x_n)$.
+
+\textbf{Giải.}
+Với $x_0 = -2$, từ Ví dụ 2 ta đã có $P(-2) = 10$.
+Sử dụng (2.16), ta có $P'(-2) = Q(-2)$, với $Q(x)=2x^{3}-4x^{2}+5x-7$. Ta tính $Q(-2)$ bằng lược đồ Horner:
+\begin{center}
+\begin{tabular}{c|l l l l}
+\hline
+& 2 & -4 & 5 & -7 \\
+\cline{2-5}
+$x_0 = -2$ & & -4 & 16 & -42 \\
+\hline
+& 2 & -8 & 21 & $\mathbf{-49} = Q(-2) = P'(-2)$ \\
+\hline
+\end{tabular}
+\end{center}
+Bước lặp Newton đầu tiên:
+$$ x_1 = x_0 - \frac{P(x_0)}{P'(x_0)} = -2 - \frac{10}{-49} \approx -1.796 $$
+Để tính $x_2$, ta lặp lại quy trình tại $x_1 = -1.796$:
+\begin{center}
+\begin{tabular}{c|l l l l l}
+\hline
+$x_1 = -1.796$ & 2 & 0 & -3 & 3 & -4 \\
+\cline{3-6}
+& & -3.592 & 6.451 & -6.197 & 5.742 \\
+\hline
+& 2 & -3.592 & 3.451 & -3.197 & $\mathbf{1.742} = P(x_1)$ \\
+\cline{3-5}
+& & -3.592 & 12.902 & -29.368 & \\
+\hline
+& 2 & -7.184 & 16.353 & $\mathbf{-32.565} = P'(x_1)$ & \\
+\hline
+\end{tabular}
+\end{center}
+Bước lặp Newton thứ hai:
+$$ x_{2}=x_{1} - \frac{P(x_{1})}{P^{\prime}(x_{1})} = -1.796 - \frac{1.742}{-32.565} \approx -1.7425 $$
+Tiếp tục tương tự, ta có $x_3 \approx -1.73897$. Nghiệm chính xác đến 5 chữ số thập phân là -1.73896.
+\par\vspace{1ex}
+
+\subsubsection{Thuật toán Horner}
+
+\begin{algorithm}[htbp]
+    \caption{Phương pháp Horner}
+    \label{alg:horner}
+    \begin{algorithmic}[1] 
+        \State \textbf{INPUT:} Bậc $n$; các hệ số $a_0, a_1, \dots, a_n$; điểm $x_0$.
+        \State \textbf{OUTPUT:} $y = P(x_0)$ và $z = P'(x_0)$.
+        
+        \Statex 
+        
+        \State \textbf{Bước 1:}
+        \State \hspace{1em} Đặt $y \gets a_n$ \Comment{Tính $b_n$ cho $P$}
+        \State \hspace{1em} Đặt $z \gets a_n$ \Comment{Tính $b_{n-1}$ cho $Q$}
+        
+        \State \textbf{Bước 2:} \Comment{Vòng lặp chính}
+        \For{$j \gets n-1$ \textbf{downto} $1$}
+            \State Đặt $y \gets x_0 y + a_j$ \Comment{Tính $b_j$ cho $P$}
+            \State Đặt $z \gets x_0 z + y$ \Comment{Tính $b_{j-1}$ cho $Q$}
+        \EndFor
+        
+        \State \textbf{Bước 3:} \Comment{Tính $b_0$ cho P}
+        \State \hspace{1em} Đặt $y \gets x_0 y + a_0$ 
+        
+        \State \textbf{Bước 4:} \Comment{Trả về kết quả}
+        \State \hspace{1em} \Return $(y, z)$
+        
+    \end{algorithmic}
+\end{algorithm}
+
+\subsection{Phép Giảm bậc (Deflation)}
+
+Khi $\hat{x}_1$ là nghiệm xấp xỉ của $P(x)$, ta có $P(x) \approx (x - \hat{x}_1)Q_1(x)$. 
+Các nghiệm còn lại của $P(x)$ xấp xỉ bằng nghiệm của $Q_1(x)$ (đa thức bậc thấp hơn). 
+Quá trình thay thế $P(x)$ bằng $Q_1(x)$ để tìm nghiệm tiếp theo gọi là \textbf{phép giảm bậc (deflation)}.
+
+\textit{Vấn đề Sai số Tích lũy:} Phép giảm bậc nhạy cảm với sai số. 
+Sai số nhỏ trong $\hat{x}_1$ và sai số làm tròn khi chia sẽ ảnh hưởng đến hệ số của $Q_1(x)$, 
+làm cho các nghiệm tìm được sau này (từ các đa thức $Q_k(x)$) ngày càng kém chính xác.
+
+\textit{Giải pháp:} Một chiến lược hiệu quả là sử dụng phép giảm bậc chỉ để tìm các \textbf{giá trị khởi tạo} 
+$\hat{x}_2, \dots, \hat{x}_n$. Sau đó, sử dụng các giá trị này làm điểm bắt đầu cho phương pháp Newton (hoặc Muller) 
+áp dụng trên \textbf{đa thức gốc $P(x)$}. Quy trình này giúp "tinh chỉnh" lại các nghiệm và loại bỏ phần lớn sai số 
+tích lũy từ quá trình giảm bậc.
+
+\subsection{Phương pháp Muller}
+
+\subsubsection{Hạn chế của các Phương pháp (và Nghiệm phức)}
+Một vấn đề quan trọng là đa thức với hệ số thực hoàn toàn có thể có nghiệm phức. 
+Các phương pháp như Newton, Cát tuyến (Secant), hay Dây cung (False Position), nếu được khởi tạo với các giá trị thực,
+sẽ chỉ tạo ra các xấp xỉ thực trong suốt quá trình lặp. Chúng không thể "tự nhiên" tìm ra được nghiệm phức.
+
+\par\vspace{1ex}
+\noindent\textbf{Định lý 2.20.}
+\textit{Nếu $P(x)$ là đa thức có hệ số thực và $z = a + bi$ (với $b \neq 0$) là một nghiệm phức có bội $m$, thì số phức liên hợp của nó $\bar{z} = a - bi$ cũng là một nghiệm của $P(x)$ với cùng bội $m$. Nhân tử bậc hai $(x-z)(x-\bar{z}) = x^2 - 2ax + a^2 + b^2$ (có hệ số thực) là một nhân tử của $P(x)$.}
+\par\vspace{1ex}
+
+\subsubsection{Ý tưởng: Xấp xỉ bằng Parabol}
+Phương pháp Muller là một giải pháp cho vấn đề tìm nghiệm phức mà không cần khởi tạo số phức, dựa trên ý tưởng 
+thay thế đường thẳng (trong phương pháp Cát tuyến) bằng một đường cong bậc hai (parabol).
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig_2.12.png}
+    \caption{So sánh phương pháp dây cung và phương pháp Muller}
+    \label{fig:fig_2.12}
+\end{figure}
+
+\textbf{So sánh ý tưởng:}
+\begin{itemize}
+    \item \textbf{Phương pháp Cát tuyến (Secant):} Dùng đường thẳng qua 2 điểm $(p_0, f(p_0))$, $(p_1, f(p_1))$. 
+    Giao điểm với trục hoành là $p_2$.
+    \item \textbf{Phương pháp Muller:} Dùng parabol qua 3 điểm $(p_0, f(p_0))$, $(p_1, f(p_1))$, $(p_2, f(p_2))$. 
+    Tìm các giao điểm của parabol với trục hoành. Chọn giao điểm gần $p_2$ nhất làm $p_3$.
+\end{itemize}
+
+\subsubsection{Xây dựng Công thức Lặp}
+Ta viết parabol dưới dạng $P_{parabol}(x) = a(x-p_2)^2 + b(x-p_2) + c$. 
+Việc parabol đi qua 3 điểm $(p_i, f(p_i))$ cho phép ta xác định các hệ số $a, b, c$:
+\begin{itemize}
+    \item $f(p_2) = a(0)^2 + b(0) + c \implies c = f(p_2)$. 
+    \item $f(p_0) = a(p_0-p_2)^2 + b(p_0-p_2) + c$. 
+    \item $f(p_1) = a(p_1-p_2)^2 + b(p_1-p_2) + c$. 
+\end{itemize}
+Giải hệ 2 phương trình (2.17) và (2.18) (sau khi thay $c=f(p_2)$) ta tìm được $a$ và $b$.
+
+Sau khi có $a, b, c$, ta cần tìm nghiệm của $P_{parabol}(x)=0$. 
+Để ổn định số học (tránh trừ các số gần bằng nhau), ta sử dụng công thức nghiệm thay thế:
+$$ x - p_2 = \frac{-2c}{b \pm \sqrt{b^2 - 4ac}} $$
+Phương pháp Muller chọn nghiệm $p_3$ là nghiệm gần $p_2$ nhất. 
+Điều này đạt được bằng cách chọn dấu $\pm$ sao cho mẫu số có trị tuyệt đối lớn nhất, 
+tức là chọn dấu của $\sqrt{b^2 - 4ac}$ trùng với dấu của $b$:
+$$ p_3 = p_2 - \frac{2c}{b + \text{sgn}(b) \sqrt{b^2 - 4ac}} $$
+Nếu $b^2 - 4ac < 0$, $\sqrt{b^2-4ac}$ là số ảo, và $p_3$ sẽ là một số phức. 
+Đây chính là cách phương pháp Muller "tự động" chuyển sang tìm nghiệm phức.
+
+\subsubsection{Thuật toán Muller}
+Sau khi tính được $p_3$, ta bỏ điểm "cũ nhất" là $p_0$, và lặp lại quy trình với 3 điểm mới $(p_1, p_2, p_3)$ để tìm 
+$p_4$. Thuật toán 2.8 mô tả chi tiết phương pháp này.
+
+\begin{algorithm}[htbp]
+    \caption{Phương pháp Muller}
+    \label{alg:muller}
+    
+    Để tìm nghiệm của $f(x)=0$ cho trước ba xấp xỉ $p_0, p_1, p_2$:
+    
+    \begin{algorithmic}[1] 
+        
+        \State \textbf{INPUT:} $p_0, p_1, p_2$; sai số \texttt{TOL}; số lần lặp tối đa $N_0$.
+        \State \textbf{OUTPUT:} Nghiệm xấp xỉ $p$ hoặc thông báo không tìm được nghiệm.
+        
+        \Statex 
+        
+        \State \textbf{Bước 1:} \Comment{Khởi tạo các giá trị ban đầu}
+        \State \hspace{1em} Đặt $h_1 \gets p_1 - p_0$
+        \State \hspace{1em} Đặt $h_2 \gets p_2 - p_1$
+        \State \hspace{1em} Đặt $\delta_1 \gets (f(p_1) - f(p_0))/h_1$
+        \State \hspace{1em} Đặt $\delta_2 \gets (f(p_2) - f(p_1))/h_2$
+        \State \hspace{1em} Đặt $d \gets (\delta_2 - \delta_1)/(h_2 + h_1)$
+        \State \hspace{1em} Đặt $i \gets 3$
+        
+        \State \textbf{Bước 2:} \Comment{Bắt đầu vòng lặp}
+        \While{$i \le N_0$}
+            \State \textbf{Bước 3:}
+            \State \hspace{1em} Đặt $b \gets \delta_2 + h_2 d$
+            \State \hspace{1em} Đặt $D \gets (b^2 - 4f(p_2)d)^{1/2}$ \Comment{Có thể cần số phức}
+            
+            \State \textbf{Bước 4:} \Comment{Chọn mẫu số $E$ để tránh sai số triệt tiêu}
+            \If{$|b-D| < |b+D|$}
+                \State Đặt $E \gets b + D$
+            \Else
+                \State Đặt $E \gets b - D$
+            \EndIf
+            
+            \State \textbf{Bước 5:} \Comment{Tính $h$ và nghiệm xấp xỉ $p$}
+            \State \hspace{1em} Đặt $h \gets -2f(p_2) / E$
+            \State \hspace{1em} Đặt $p \gets p_2 + h$
+            
+            \State \textbf{Bước 6:} \Comment{Kiểm tra điều kiện dừng}
+            \If{$|h| < \texttt{TOL}$}
+                \State \Return ($p$) \Comment{Thủ tục thành công}
+            \EndIf
+            
+            \State \textbf{Bước 7:} \Comment{Cập nhật các giá trị cho lần lặp tiếp theo}
+            \State \hspace{1em} Đặt $p_0 \gets p_1$
+            \State \hspace{1em} Đặt $p_1 \gets p_2$
+            \State \hspace{1em} Đặt $p_2 \gets p$
+            \State \hspace{1em} Đặt $h_1 \gets p_1 - p_0$
+            \State \hspace{1em} Đặt $h_2 \gets p_2 - p_1$
+            \State \hspace{1em} Đặt $\delta_1 \gets (f(p_1) - f(p_0))/h_1$
+            \State \hspace{1em} Đặt $\delta_2 \gets (f(p_2) - f(p_1))/h_2$
+            \State \hspace{1em} Đặt $d \gets (\delta_2 - \delta_1)/(h_2 + h_1)$
+            \State \hspace{1em} Đặt $i \gets i+1$
+        \EndWhile
+        
+        \State \textbf{Bước 8:} \Comment{Thất bại sau $N_0$ lần lặp}
+        \State \hspace{1em} \Return ('Phương pháp thất bại sau $N_0$ lần lặp.')
+        
+    \end{algorithmic}
+\end{algorithm}
+
+\subsubsection{Ví dụ Minh họa}
+Xét đa thức $f(x)=x^{4}-3x^{3}+x^{2}+x+1$. Sử dụng Thuật toán 2.8 với $\texttt{TOL}=10^{-5}$ để xấp xỉ các nghiệm.
+
+\begin{figure}[htbp]
+    \centering
+    \includegraphics[width=0.8\textwidth]{figures/fig_2.13.png}
+    \caption{Đồ thị hàm số f(x)}
+    \label{fig:fig_2.13}
+\end{figure}
+
+\begin{itemize}
+    \item \textbf{Tìm nghiệm phức:} Bắt đầu với $p_0=0.5$, $p_1=-0.5$, $p_2=0$.
+    \begin{center}
+    \captionof{table}{Phương pháp Muller tìm nghiệm phức}
+    \begin{tabular}{l l l}
+    \toprule
+    $i$ & $p_i$ & $f(p_i)$ \\
+    \midrule
+    3 & $-0.100000 + 0.888819i$ & $-0.011200 + 3.014875i$ \\
+    4 & $-0.492146 + 0.447031i$ & $-0.169120 - 0.736733i$ \\
+    5 & $-0.352226 + 0.484132i$ & $-0.178600 + 0.018187i$ \\
+    6 & $-0.340229 + 0.443036i$ & $0.011977 - 0.010556i$ \\
+    7 & $-0.339095 + 0.446656i$ & $-0.001055 + 0.000387i$ \\
+    8 & $-0.339093 + 0.446630i$ & $0.000000 + 0.000000i$ \\
+    9 & $-0.339093 + 0.446630i$ & $0.000000 + 0.000000i$ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:muller_complex}
+    \end{center}
+    
+    \item \textbf{Tìm nghiệm thực:} Sử dụng các bộ điểm khởi tạo khác nhau.
+    \begin{center}
+    \captionof{table}{Phương pháp Muller tìm nghiệm thực}
+    \begin{tabular}{l l l l l}
+    \toprule
+    & \multicolumn{2}{c}{$p_0=0.5, p_1=1.0, p_2=1.5$} & \multicolumn{2}{c}{$p_0=1.5, p_1=2.0, p_2=2.5$} \\
+    \cmidrule(r){2-3} \cmidrule(l){4-5}
+    $i$ & $p_i$ & $f(p_i)$ & $p_i$ & $f(p_i)$ \\
+    \midrule
+    3 & $1.40637$ & $-0.04851$ & $2.24733$ & $-0.24507$ \\
+    4 & $1.38878$ & $0.00174$ & $2.28652$ & $-0.01446$ \\
+    5 & $1.38939$ & $0.00000$ & $2.28878$ & $-0.00012$ \\
+    6 & $1.38939$ & $0.00000$ & $2.28880$ & $0.00000$ \\
+    7 & & & $2.28879$ & $0.00000$ \\
+    \bottomrule
+    \end{tabular}
+    \label{tab:muller_real}
+    \end{center}
+\end{itemize}
+Phương pháp Muller có thể hội tụ về nghiệm với nhiều lựa chọn điểm bắt đầu khác nhau. 
+Tuy nhiên, phương pháp này vẫn có thể không tìm được nghiệm, 
+ví dụ nếu $f(p_i) = f(p_{i+1}) = f(p_{i+2}) \neq 0$ (parabol trở thành đường thẳng song song trục hoành).
+
+\section{Các thư viện số học và Tổng kết Chương}
+
+\subsection{Tổng quan về các Phần mềm số}
+Một chương trình số hiệu quả, khi nhận đầu vào là một hàm $f$ và một sai số $\epsilon$ (tolerance) cho trước, 
+cần phải đưa ra được một hoặc nhiều nghiệm xấp xỉ của $f(x) = 0$. 
+Mỗi nghiệm này phải có sai số tuyệt đối hoặc tương đối nằm trong $\epsilon$, và kết quả phải được tạo ra trong một 
+khoảng thời gian hợp lý.
+
+Nếu chương trình không thể hoàn thành nhiệm vụ, nó ít nhất phải cung cấp các giải trình có ý nghĩa về nguyên nhân 
+thất bại và đưa ra chỉ dẫn về cách khắc phục.
+
+Chúng tôi giới thiệu một số phần mềm (thư viện) hiệu quả, chủ yếu dựa trên các nguyên tắc và phương pháp đã trình bày bên trên.
+
+\begin{itemize}
+    \item \textbf{Thư viện IMSL:} Cung cấp các chương trình con thực thi \textbf{phương pháp Muller} 
+    kết hợp với \textbf{giảm bậc đa thức (deflation)}. Gói này cũng bao gồm một chương trình con của R. P. Brent, 
+    sử dụng kết hợp \textbf{nội suy tuyến tính}, \textbf{nội suy bậc hai nghịch đảo} (tương tự Muller), 
+    và \textbf{phương pháp Chia đôi}. Phương pháp \textbf{Laguerre} cũng được dùng để tìm nghiệm của đa thức thực, 
+    và phương pháp \textbf{Jenkins-Traub} được dùng cho đa thức thực và phức.
+
+    \item \textbf{Thư viện NAG:} Cung cấp một chương trình con kết hợp \textbf{Chia đôi}, \textbf{nội suy tuyến tính},
+     và \textbf{ngoại suy (extrapolation)} để xấp xỉ một nghiệm thực trên một khoảng cho trước. 
+     NAG cũng cung cấp các chương trình con để xấp xỉ \textit{tất cả} các nghiệm của đa thức thực hoặc phức, 
+     cả hai đều sử dụng \textbf{phương pháp Laguerre cải tiến}.
+
+    \item \textbf{Thư viện Netlib:} Chứa một chương trình con của T.J. Dekker, kết hợp \textbf{Chia đôi} và 
+    \textbf{phương pháp Cát tuyến (Secant method)} để xấp xỉ một nghiệm thực trong một khoảng. 
+    Nó yêu cầu một khoảng chứa nghiệm và trả về một khoảng có độ rộng nằm trong sai số $\epsilon$ cho phép. 
+    Một chương trình con khác sử dụng kết hợp Chia đôi, nội suy, và ngoại suy.
+\end{itemize}
+
+\subsection{Tổng kết Chương}
+Trong chương này, chúng ta đã xem xét bài toán giải phương trình $f(x) = 0$ cho một hàm $f$ liên tục. 
+Tất cả các phương pháp đều bắt đầu với các xấp xỉ ban đầu và tạo ra một dãy (nếu thành công) hội tụ về một nghiệm 
+của phương trình.
+
+\begin{itemize}
+    \item \textbf{Phương pháp Chia đôi} và \textbf{Phương pháp Dây cung (False Position):} Đây là các phương pháp 
+    "khoảng chứa nghiệm" (bracketing). Chúng đảm bảo hội tụ nếu có một khoảng $[a, b]$ mà $f(a)$ và $f(b)$ trái dấu. 
+    Tuy nhiên, tốc độ hội tụ của chúng có thể rất chậm.
+
+    \item \textbf{Phương pháp Cát tuyến (Secant)} và \textbf{Phương pháp Newton:} Thường cho tốc độ hội tụ nhanh hơn. 
+    Tuy nhiên, chúng yêu cầu các xấp xỉ ban đầu tốt (hai điểm cho Cát tuyến, và một điểm cho Newton).
+
+    \item \textbf{Chiến lược kết hợp:} Các phương pháp "khoảng chứa nghiệm" (như Chia đôi) có thể được sử dụng làm 
+    "phương pháp khởi động" (starter methods) để cung cấp các xấp xỉ ban đầu đủ tốt cho các phương pháp nhanh hơn 
+    (như Newton hoặc Cát tuyến).
+
+    \item \textbf{Phương pháp Muller:}
+    \begin{itemize}
+        \item Cung cấp tốc độ hội tụ nhanh (bậc hội tụ $\alpha \approx 1.84$) mà không yêu cầu xấp xỉ ban đầu đặc biệt tốt.
+        \item Hiệu quả không bằng Newton (bậc $\alpha = 2$), nhưng tốt hơn Cát tuyến (bậc $\alpha \approx 1.62$).
+        \item Có ưu điểm lớn là khả năng xấp xỉ các \textbf{nghiệm phức}, ngay cả khi các xấp xỉ ban đầu là số thực.
+    \end{itemize}
+
+    \item \textbf{Giảm bậc Đa thức (Deflation):}
+    \begin{itemize}
+        \item Thường được sử dụng với phương pháp Newton hoặc Muller khi tìm nghiệm của đa thức.
+        \item \textbf{Lưu ý quan trọng:} Sau khi tìm được một nghiệm xấp xỉ $x_1$ từ đa thức \textit{đã giảm bậc}, 
+        nghiệm này nên được sử dụng làm xấp xỉ ban đầu để chạy lại phương pháp (Newton hoặc Muller) trên đa thức 
+        \textit{gốc}. Quy trình này đảm bảo nghiệm tìm được là nghiệm của phương trình gốc, chứ không phải của phương 
+        trình đã giảm bậc (vốn có thể bị tích lũy sai số).
+    \end{itemize}
+
+    \item \textbf{Các phương pháp khác:}
+    \begin{itemize}
+        \item \textbf{Phương pháp Laguerre:} Có tốc độ hội tụ bậc ba (cubic) và cũng xấp xỉ được nghiệm phức.
+        \item \textbf{Phương pháp Cauchy:} Tương tự như Muller, nhưng tránh được trường hợp thất bại của Muller khi 
+        $f(x_i) = f(x_{i+1}) = f(x_{i+2})$ tại một vài bước lặp.
+    \end{itemize}
+\end{itemize}
